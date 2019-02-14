@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import ru.bms.bpsapi.HelloResponse;
+import ru.bms.api.HelloResponse;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
 import ru.bms.webservice.service.PaymentMapper;
@@ -24,7 +24,7 @@ public class BPSController {
 
     @GetMapping("/hello")
     public Mono<HelloResponse> hello() {
-        return Mono.just(HelloResponse.builder().message("Hello, my friend!").build());
+        return Mono.just(HelloResponse.builder().message("Hello, my friend! I`m BPS Controller.").build());
     }
 
     @PostMapping("/payment")

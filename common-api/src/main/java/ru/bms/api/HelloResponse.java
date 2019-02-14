@@ -1,4 +1,4 @@
-package ru.bms.bpsapi;
+package ru.bms.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

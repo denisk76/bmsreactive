@@ -1,4 +1,4 @@
-package ru.bms.webservice;
+package ru.bms.terminalservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,18 +9,20 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import ru.bms.api.Bill;
+import ru.bms.TerminalRequest;
+import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
-import ru.bms.webservice.api.PutPaymentRequest;
-import ru.bms.webservice.api.PutPaymentResponse;
+import ru.bms.api.RuleUnit;
+import ru.bms.api.Terminal;
 
 import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest
-@ContextConfiguration(classes = {WebServiceApplication.class, BPSConfig.class})
-public class WebServiceApplicationTests {
+@ContextConfiguration(classes = {TerminalServiceApplication.class})
+public class TerminalServiceApplicationTests {
 
+    public static final String TERMINAL_CODE = "123";
     @Autowired
     private WebTestClient webClient;
 
@@ -30,25 +32,22 @@ public class WebServiceApplicationTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(HelloResponse.class)
-                .isEqualTo(HelloResponse.builder().message("Hello, my friend! I`m BPS Controller.").build());
+                .isEqualTo(HelloResponse.builder().message("Hello, my friend! I`m Terminal Controller.").build());
     }
 
     @Test
-    public void testPayment() throws Exception {
-        webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
+    public void testGetTerminal() throws Exception {
+        webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        PutPaymentRequest.builder()
-                                .cardNum("1234")
-                                .terminalCode("345t")
-                                .bill(Bill.builder().sum(BigDecimal.TEN).build())
-                                .build()))
+                        TerminalRequest.builder()
+                                .terminal(Terminal.builder().code(TERMINAL_CODE).build())
+                                .build()
+                ))
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(PutPaymentResponse.class)
-                .isEqualTo(PutPaymentResponse.builder()
-                        .amount(BigDecimal.TEN)
-                        .earn(BigDecimal.ONE)
-                        .spend(BigDecimal.ONE)
+                .expectBody(TerminalResponse.class)
+                .isEqualTo(TerminalResponse.builder()
+                        .ruleUnit(RuleUnit.builder().percent(BigDecimal.valueOf(20)).build())
                         .build());
     }
 

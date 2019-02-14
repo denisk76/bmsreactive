@@ -8,9 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>ru.bms</groupId>
-    <artifactId>web-service</artifactId>
+    <artifactId>terminal-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>web-service</name>
+    <name>terminal-service</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -27,6 +27,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,7 +54,7 @@
         </dependency>
         <dependency>
             <groupId>ru.bms</groupId>
-            <artifactId>bps-api</artifactId>
+            <artifactId>terminal-api</artifactId>
         </dependency>
     </dependencies>
 
