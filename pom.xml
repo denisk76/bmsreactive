@@ -16,6 +16,8 @@
         <module>common-api</module>
         <module>terminal-api</module>
         <module>payment-service</module>
+        <module>client-service</module>
+        <module>terminal-service</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -56,7 +58,15 @@
         </dependencies>
     </dependencyManagement>
     <build>
-        <pluginManagement></pluginManagement>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-dependencies.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
