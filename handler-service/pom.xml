@@ -60,6 +60,18 @@
             <groupId>ru.bms</groupId>
             <artifactId>bps-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.bms</groupId>
+            <artifactId>payment-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.bms</groupId>
+            <artifactId>client-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.bms</groupId>
+            <artifactId>terminal-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -32,7 +32,7 @@ public class BPSController {
         log.info("post /payment ");
         log.info(request.toString());
         return paymentService.payment(paymentMapper.mapRequest(request))
-                .map(r -> paymentMapper.mapResponse(r));
+                .map(paymentMapper::mapResponse);
     }
 
 }

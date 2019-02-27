@@ -1,4 +1,4 @@
-package ru.bms.webservice;
+package ru.bms.webservice.pilot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import ru.bms.api.Bill;
 import ru.bms.api.HelloResponse;
+import ru.bms.webservice.BPSConfig;
+import ru.bms.webservice.WebServiceApplication;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
 
@@ -19,8 +21,18 @@ import java.math.BigDecimal;
 @RunWith(SpringRunner.class)
 @WebFluxTest
 @ContextConfiguration(classes = {WebServiceApplication.class, BPSConfig.class})
-public class WebServiceApplicationTests {
+public class WebServiceIntegrationTest {
 
+    public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
+            .cardNum("1234")
+            .terminalCode("345t")
+            .bill(Bill.builder().sum(BigDecimal.TEN).build())
+            .build();
+    public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
+            .amount(BigDecimal.TEN)
+            .earn(BigDecimal.ONE)
+            .spend(BigDecimal.ONE)
+            .build();
     @Autowired
     private WebTestClient webClient;
 
@@ -37,19 +49,11 @@ public class WebServiceApplicationTests {
     public void testPayment() throws Exception {
         webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        PutPaymentRequest.builder()
-                                .cardNum("1234")
-                                .terminalCode("345t")
-                                .bill(Bill.builder().sum(BigDecimal.TEN).build())
-                                .build()))
+                        REQUEST))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PutPaymentResponse.class)
-                .isEqualTo(PutPaymentResponse.builder()
-                        .amount(BigDecimal.TEN)
-                        .earn(BigDecimal.ONE)
-                        .spend(BigDecimal.ONE)
-                        .build());
+                .isEqualTo(RESPONSE);
     }
 
 }

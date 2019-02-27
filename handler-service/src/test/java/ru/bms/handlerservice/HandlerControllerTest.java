@@ -21,9 +21,15 @@ import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest
-@ContextConfiguration(classes = HandlerServiceApplication.class)
+@ContextConfiguration(classes = {HandlerServiceApplication.class, HandlerTestConfig.class})
 public class HandlerControllerTest {
 
+    public static final BPSPaymentOperation OPERATION = BPSPaymentOperation.builder()
+            .data(BPSPaymentData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build())
+            .terminal(Terminal.builder().code("123").build())
+            .client(BPSClient.builder().cardNum("0000080012345678").build())
+            .build();
+    public static final BPSPaymentResponse RESPONSE = BPSPaymentResponse.builder().amount(BigDecimal.TEN).build();
     @Autowired
     WebTestClient webClient;
 
@@ -39,15 +45,11 @@ public class HandlerControllerTest {
     @Test
     public void paymentTest() {
         webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(BPSPaymentOperation.builder()
-                        .data(BPSPaymentData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build())
-                        .terminal(Terminal.builder().code("123").build())
-                        .client(BPSClient.builder().cardNum("0000080012345678").build())
-                        .build()))
+                .body(BodyInserters.fromObject(OPERATION))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(BPSPaymentResponse.class)
-                .isEqualTo(BPSPaymentResponse.builder().amount(BigDecimal.TEN).build());
+                .isEqualTo(RESPONSE);
     }
 
 }

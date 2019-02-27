@@ -1,20 +1,38 @@
 package ru.bms.handlerservice;
 
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import ru.bms.ClientRequest;
+import ru.bms.ClientResponse;
+import ru.bms.TerminalRequest;
+import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
 import ru.bms.bpsapi.BPSPaymentOperation;
 import ru.bms.bpsapi.BPSPaymentResponse;
-
-import java.math.BigDecimal;
+import ru.bms.handlerservice.service.ClientService;
+import ru.bms.handlerservice.service.PaymentMapper;
+import ru.bms.handlerservice.service.PaymentService;
+import ru.bms.handlerservice.service.TerminalService;
+import ru.bms.paymentapi.PaymentRequest;
 
 @RestController
 @Log
 public class HandlerController {
+
+    @Autowired
+    PaymentService paymentService;
+    @Autowired
+    ClientService clientService;
+    @Autowired
+    TerminalService terminalService;
+    @Autowired
+    PaymentMapper mapper;
+
     @GetMapping("/hello")
     public Mono<HelloResponse> hello() {
         return Mono.just(HelloResponse.builder().message("Hello!").build());
@@ -22,11 +40,32 @@ public class HandlerController {
 
 
     @PostMapping("/payment")
-    public Mono<BPSPaymentResponse> payment(@RequestBody BPSPaymentOperation request) {
+    public Mono<BPSPaymentResponse> payment(@RequestBody BPSPaymentOperation operation) {
         log.info("post /payment");
-        log.info(request.toString());
-        return Mono.just(BPSPaymentResponse.builder()
-                .amount(BigDecimal.TEN)
-                .build());
+        log.info(operation.toString());
+
+        return
+                Mono.just(operation)
+                        .map(mapper::mapRequest)
+                        .zipWith(clientService.getClient(ClientRequest.builder()
+                                        .client(operation.getClient())
+                                        .build()),
+                                this::addClient)
+                        .zipWith(terminalService.getTerminal(TerminalRequest.builder()
+                                        .terminal(operation.getTerminal())
+                                        .build()),
+                                this::addTerminal)
+                        .flatMap(paymentService::payment)
+                        .map(mapper::mapResponse);
+    }
+
+    private PaymentRequest addClient(PaymentRequest request, ClientResponse clientResponse) {
+        request.setAccount(clientResponse.getAccount());
+        return request;
+    }
+
+    private PaymentRequest addTerminal(PaymentRequest request, TerminalResponse terminalResponse) {
+        request.setRuleUnit(terminalResponse.getRuleUnit());
+        return request;
     }
 }

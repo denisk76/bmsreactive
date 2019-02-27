@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @RunWith(SpringRunner.class)
 @WebFluxTest
 @ContextConfiguration(classes = {TerminalServiceApplication.class})
-public class TerminalServiceApplicationTests {
+public class TerminalServiceApplicationTest {
 
     public static final String TERMINAL_CODE = "123";
     @Autowired
