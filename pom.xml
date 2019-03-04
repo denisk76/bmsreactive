@@ -19,10 +19,12 @@
         <module>client-service</module>
         <module>terminal-service</module>
         <module>handler-service</module>
+        <module>zipkin</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
         <spring-boot-dependencies.version>2.1.3.RELEASE</spring-boot-dependencies.version>
+        <spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
     </properties>
     <dependencyManagement>
         <dependencies>

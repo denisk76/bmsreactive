@@ -1,6 +1,8 @@
 package ru.bms.handlerservice.service.pilot;
 
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,11 +14,9 @@ import ru.bms.handlerservice.service.TerminalService;
 @Log
 public class PilotTerminalService implements TerminalService {
 
+    @Autowired
+    @Qualifier("terminalWebClient")
     WebClient webClient;
-
-    public PilotTerminalService() {
-        this.webClient = WebClient.builder().baseUrl("http://localhost:8084").build();
-    }
 
     @Override
     public Mono<TerminalResponse> getTerminal(TerminalRequest request) {

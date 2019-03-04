@@ -2,6 +2,7 @@ package ru.bms.handlerservice;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 import ru.bms.handlerservice.service.ClientService;
 import ru.bms.handlerservice.service.PaymentMapper;
 import ru.bms.handlerservice.service.PaymentService;
@@ -13,6 +14,21 @@ import ru.bms.handlerservice.service.simple.SimplePaymentMapper;
 
 @Configuration
 public class HandlerConfig {
+    @Bean
+    public WebClient terminalWebClient() {
+        return WebClient.builder().baseUrl("http://localhost:8084").build();
+    }
+
+    @Bean
+    public WebClient clientWebClient() {
+        return WebClient.builder().baseUrl("http://localhost:8083").build();
+    }
+
+    @Bean
+    public WebClient paymentWebClient() {
+        return WebClient.builder().baseUrl("http://localhost:8082").build();
+    }
+
     @Bean
     public PaymentService paymentService() {
         return new PilotPaymentService();

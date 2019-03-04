@@ -1,6 +1,7 @@
 package ru.bms.webservice.service.pilot;
 
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,11 +13,8 @@ import ru.bms.webservice.service.PaymentService;
 @Log
 public class PilotPaymentService implements PaymentService {
 
+    @Autowired
     WebClient webClient;
-
-    public PilotPaymentService() {
-        this.webClient = WebClient.builder().baseUrl("http://localhost:8081").build();
-    }
 
     @Override
     public Mono<BPSPaymentResponse> payment(BPSPaymentOperation request) {
