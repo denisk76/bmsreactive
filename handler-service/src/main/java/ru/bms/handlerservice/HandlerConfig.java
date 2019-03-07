@@ -16,17 +16,17 @@ import ru.bms.handlerservice.service.simple.SimplePaymentMapper;
 public class HandlerConfig {
     @Bean
     public WebClient terminalWebClient() {
-        return WebClient.builder().baseUrl("http://localhost:8084").build();
+        return WebClient.builder().baseUrl("http://terminal-service:8080").build();
     }
 
     @Bean
     public WebClient clientWebClient() {
-        return WebClient.builder().baseUrl("http://localhost:8083").build();
+        return WebClient.builder().baseUrl("http://client-service:8080").build();
     }
 
     @Bean
     public WebClient paymentWebClient() {
-        return WebClient.builder().baseUrl("http://localhost:8082").build();
+        return WebClient.builder().baseUrl("http://payment-service:8080").build();
     }
 
     @Bean

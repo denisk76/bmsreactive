@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  grafana:
+    image: grafana/grafana:6.0.0
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+    volumes:
+      - ./config/grafana/provisioning/:/etc/grafana/provisioning/
+    network_mode: "host"
+  #    networks:
+  #      monitoring:
+  #        aliases:
+  #          - grafana
+  prometheus:
+    image: prom/prometheus:v2.7.2
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus/:/etc/prometheus/
+    network_mode: "host"
+#    networks:
+#      monitoring:
+#        aliases:
+#          - prometheus
+#networks:
+#  monitoring:

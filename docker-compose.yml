@@ -1,0 +1,114 @@
+version: '3'
+
+services:
+  client-service:
+    image: bmsgroup/client-service
+    build:
+      context: ./client-service
+      dockerfile: Dockerfile
+    ports:
+      - 8083:8080
+    volumes:
+      - ./client-service/docker/config:/config
+  handler-service:
+    image: bmsgroup/handler-service
+    build:
+      context: ./handler-service
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8080
+    volumes:
+      - ./handler-service/docker/config:/config
+  payment-service:
+    image: bmsgroup/payment-service
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8080
+    volumes:
+      - ./payment-service/docker/config:/config
+  terminal-service:
+    image: bmsgroup/terminal-service
+    build:
+      context: ./terminal-service
+      dockerfile: Dockerfile
+    ports:
+      - 8084:8080
+    volumes:
+      - ./terminal-service/docker/config:/config
+  web-service:
+    image: bmsgroup/web-service
+    build:
+      context: ./web-service
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./web-service/docker/config:/config
+  zipkin:
+    image: bmsgroup/zipkin
+    build:
+      context: ./zipkin
+      dockerfile: Dockerfile
+    ports:
+      - 9411:9411
+    volumes:
+      - ./zipkin/docker/config:/config
+
+  grafana:
+    image: grafana/grafana:$GRAFANA_VERSION
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+    volumes:
+      - ./Prometheus/config/grafana/provisioning/:/etc/grafana/provisioning/
+  prometheus:
+    image: prom/prometheus:$PROMETHEUS_VERSION
+    ports:
+      - 9090:9090
+    volumes:
+      - ./Prometheus/config/prometheus/:/etc/prometheus/
+
+  elasticsearch:
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  logstash:
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - 5000:5000
+      - 9600:9600
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch

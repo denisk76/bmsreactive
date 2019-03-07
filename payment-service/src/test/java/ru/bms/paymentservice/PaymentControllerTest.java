@@ -37,7 +37,7 @@ public class PaymentControllerTest {
 
     @Test
     public void paymentTest() {
-        webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
+        webClient.post().uri("/getPayment").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         PaymentRequest.builder()
                                 .account(Account.builder().amount(BigDecimal.TEN).build())

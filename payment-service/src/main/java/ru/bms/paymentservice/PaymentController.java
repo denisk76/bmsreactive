@@ -22,9 +22,9 @@ public class PaymentController {
         return Mono.just(HelloResponse.builder().message("Hello").build());
     }
 
-    @PostMapping("/payment")
+    @PostMapping("/getPayment")
     public Mono<PaymentResponse> payment(@RequestBody PaymentRequest request) {
-        log.info("post /payment");
+        log.info("post /getPayment");
         log.info(request.toString());
         return Mono.just(PaymentResponse.builder()
                 .account(Account.builder().amount(BigDecimal.TEN).build())

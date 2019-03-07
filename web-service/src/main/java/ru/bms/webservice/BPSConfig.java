@@ -13,7 +13,7 @@ public class BPSConfig {
 
     @Bean
     public WebClient webClient() {
-        return WebClient.builder().baseUrl("http://localhost:8081").build();
+        return WebClient.builder().baseUrl("http://handler-service:8080").build();
     }
 
     @Bean

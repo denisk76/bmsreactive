@@ -1,12 +1,12 @@
 spring:
   application:
-    name: web
+    name: handler
   zipkin:
     service:
-      name: web-service
+      name: handler-service
     sender:
       type: web
-    base-url: http://localhost:9411
+    base-url: http://zipkin:9411
   sleuth:
     sampler:
       probability: 1.0
@@ -18,9 +18,3 @@ logging:
       springframework:
         cloud:
           sleuth: DEBUG
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus

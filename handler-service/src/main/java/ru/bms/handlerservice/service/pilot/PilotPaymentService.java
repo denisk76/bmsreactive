@@ -22,7 +22,7 @@ public class PilotPaymentService implements PaymentService {
     public Mono<PaymentResponse> payment(PaymentRequest request) {
         log.info("Pilot payment service run payment ...");
         log.info(request.toString());
-        return webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
+        return webClient.post().uri("/getPayment").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(request))
                 .retrieve().bodyToMono(PaymentResponse.class);
     }
