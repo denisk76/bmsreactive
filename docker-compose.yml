@@ -46,6 +46,7 @@ services:
       - 8080:8080
     volumes:
       - ./web-service/docker/config:/config
+
   zipkin:
     image: bmsgroup/zipkin
     build:

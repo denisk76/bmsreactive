@@ -19,8 +19,8 @@ logging:
         cloud:
           sleuth: DEBUG
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: prometheus
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: prometheus
