@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  client-service:
+    image: 192.168.4.176:5000/bmsgroup/client-service:${TAG}
+  handler-service:
+    image: 192.168.4.176:5000/bmsgroup/handler-service:${TAG}
+  payment-service:
+    image: 192.168.4.176:5000/bmsgroup/payment-service:${TAG}
+  terminal-service:
+    image: 192.168.4.176:5000/bmsgroup/terminal-service:${TAG}
+  web-service:
+    image: 192.168.4.176:5000/bmsgroup/web-service:${TAG}
+  zipkin:
+    image: 192.168.4.176:5000/bmsgroup/zipkin:${TAG}
+  elasticsearch:
+    image: 192.168.4.176:5000/bmsgroup/elasticsearch:${TAG}
+  logstash:
+    image: 192.168.4.176:5000/bmsgroup/logstash:${TAG}
+  kibana:
+    image: 192.168.4.176:5000/bmsgroup/kibana:${TAG}

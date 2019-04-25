@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   client-service:
-    image: bmsgroup/client-service
+    image: 192.168.4.176:5000/bmsgroup/client-service:${TAG}
     build:
       context: ./client-service
       dockerfile: Dockerfile

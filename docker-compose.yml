@@ -74,6 +74,7 @@ services:
       - ./Prometheus/config/prometheus/:/etc/prometheus/
 
   elasticsearch:
+    image: bmsgroup/elasticsearch
     build:
       context: elasticsearch/
       args:
@@ -87,6 +88,7 @@ services:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
 
   logstash:
+    image: bmsgroup/logstash
     build:
       context: logstash/
       args:
@@ -103,6 +105,7 @@ services:
       - elasticsearch
 
   kibana:
+    image: bmsgroup/kibana
     build:
       context: kibana/
       args:

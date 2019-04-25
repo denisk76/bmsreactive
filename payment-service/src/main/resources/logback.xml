@@ -24,7 +24,7 @@
                 <pattern>
                     <pattern>
                         {
-                        "serviceName": "web-service"
+                        "serviceName": "payment-service"
                         }
                     </pattern>
                 </pattern>
