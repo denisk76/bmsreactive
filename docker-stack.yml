@@ -78,21 +78,74 @@ services:
     configs:
       - source: grafana_config
         target: /etc/prometheus/prometheus.yml
+  elasticsearch:
+    image: bmsgroup/elasticsearch
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    configs:
+      - source: elasticsearch_config
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+  logstash:
+    image: bmsgroup/logstash
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - 5000:5000
+      - 9600:9600
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+    configs:
+      - source: logstash_config
+        target: /usr/share/logstash/config/logstash.yml
+      - source: logstash_pipeline_config
+        target: /usr/share/logstash/pipeline/logstash.conf
+  kibana:
+    image: bmsgroup/kibana
+    build:
+      context: kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    configs:
+      - source: kibana_config
+        target: /usr/share/kibana/config/kibana.yml
 
 configs:
   client_config:
     file: ./client-service/docker/config/client-service.yml
   handler_config:
     file: ./handler-service/docker/config/handler-service.yml
-  payment-config:
+  payment_config:
     file: ./payment-service/docker/config/payment-config.yml
-  terminal-config:
+  terminal_config:
     file: ./terminal-service/docker/config/terminal-config.yml
-  web-config:
+  web_config:
     file: ./web-service/docker/config/web-config.yml
-  zipkin-config:
+  zipkin_config:
     file: ./zipkin/docker/config/zipkin.yml
-  grafana-config:
+  grafana_config:
     file: ./Prometheus/config/grafana/provisioning/datasources/datasource.yml
-  prometheus-config:
+  prometheus_config:
     file: ./Prometheus/config/prometheus/prometheus.yml
+  elasticsearch_config:
+    file: ./elasticsearch/config/elasticsearch.yml
+  logstash_config:
+    file: ./logstash/config/logstash.yml
+  logstash_pipeline_config:
+    file: ./logstash/pipeline/logstash.conf
+  kibana_config:
+    file: ./kibana/config/kibana.yml
