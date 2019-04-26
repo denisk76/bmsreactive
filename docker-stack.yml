@@ -152,11 +152,11 @@ configs:
   handler_config:
     file: ./handler-service/docker/config/handler-service.yml
   payment_config:
-    file: ./payment-service/docker/config/payment-config.yml
+    file: ./payment-service/docker/config/payment-service.yml
   terminal_config:
-    file: ./terminal-service/docker/config/terminal-config.yml
+    file: ./terminal-service/docker/config/terminal-service.yml
   web_config:
-    file: ./web-service/docker/config/web-config.yml
+    file: ./web-service/docker/config/web-service.yml
   zipkin_config:
     file: ./zipkin/docker/config/zipkin.yml
   grafana_config:
