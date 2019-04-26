@@ -102,7 +102,7 @@ services:
     ports:
       - 9090:9090
     configs:
-      - source: grafana_config
+      - source: prometheus_config
         target: /etc/prometheus/prometheus.yml
   elasticsearch:
     image:  192.168.4.176:5000/bmsgroup/elasticsearch:${TAG}
