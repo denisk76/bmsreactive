@@ -12,7 +12,7 @@ services:
       - source: client_config
         target: /config/client-service.yml
   handler-service:
-    image: bmsgroup/handler-service
+    image:  192.168.4.176:5000/bmsgroup/handler-service:${TAG}
     build:
       context: ./handler-service
       dockerfile: Dockerfile
@@ -22,7 +22,7 @@ services:
       - source: handler_config
         target: /config/handler-service.yml
   payment-service:
-    image: bmsgroup/payment-service
+    image:  192.168.4.176:5000/bmsgroup/payment-service:${TAG}
     build:
       context: ./payment-service
       dockerfile: Dockerfile
@@ -32,7 +32,7 @@ services:
       - source: payment_config
         target: /config/payment-service.yml
   terminal-service:
-    image: bmsgroup/terminal-service
+    image:  192.168.4.176:5000/bmsgroup/terminal-service:${TAG}
     build:
       context: ./terminal-service
       dockerfile: Dockerfile
@@ -42,7 +42,7 @@ services:
       - source: terminal_config
         target: /config/terminal-service.yml
   web-service:
-    image: bmsgroup/web-service
+    image:  192.168.4.176:5000/bmsgroup/web-service:${TAG}
     build:
       context: ./web-service
       dockerfile: Dockerfile
@@ -52,7 +52,7 @@ services:
       - source: web_config
         target: /config/web-service.yml
   zipkin:
-    image: bmsgroup/zipkin
+    image:  192.168.4.176:5000/bmsgroup/zipkin:${TAG}
     build:
       context: ./zipkin
       dockerfile: Dockerfile
@@ -79,7 +79,7 @@ services:
       - source: grafana_config
         target: /etc/prometheus/prometheus.yml
   elasticsearch:
-    image: bmsgroup/elasticsearch
+    image:  192.168.4.176:5000/bmsgroup/elasticsearch:${TAG}
     build:
       context: elasticsearch/
       args:
@@ -93,7 +93,7 @@ services:
       - source: elasticsearch_config
         target: /usr/share/elasticsearch/config/elasticsearch.yml
   logstash:
-    image: bmsgroup/logstash
+    image:  192.168.4.176:5000/bmsgroup/logstash:${TAG}
     build:
       context: logstash/
       args:
@@ -111,7 +111,7 @@ services:
       - source: logstash_pipeline_config
         target: /usr/share/logstash/pipeline/logstash.conf
   kibana:
-    image: bmsgroup/kibana
+    image:  192.168.4.176:5000/bmsgroup/kibana:${TAG}
     build:
       context: kibana/
       args:
