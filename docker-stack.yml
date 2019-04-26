@@ -3,6 +3,8 @@ version: '3.3'
 services:
   client-service:
     image: 192.168.4.176:5000/bmsgroup/client-service:${TAG}
+    networks:
+      - hazelnet
     build:
       context: ./client-service
       dockerfile: Dockerfile
@@ -13,6 +15,8 @@ services:
         target: /config/client-service.yml
   handler-service:
     image:  192.168.4.176:5000/bmsgroup/handler-service:${TAG}
+    networks:
+      - hazelnet
     build:
       context: ./handler-service
       dockerfile: Dockerfile
@@ -23,6 +27,8 @@ services:
         target: /config/handler-service.yml
   payment-service:
     image:  192.168.4.176:5000/bmsgroup/payment-service:${TAG}
+    networks:
+      - hazelnet
     build:
       context: ./payment-service
       dockerfile: Dockerfile
@@ -33,6 +39,8 @@ services:
         target: /config/payment-service.yml
   terminal-service:
     image:  192.168.4.176:5000/bmsgroup/terminal-service:${TAG}
+    networks:
+      - hazelnet
     build:
       context: ./terminal-service
       dockerfile: Dockerfile
@@ -43,6 +51,8 @@ services:
         target: /config/terminal-service.yml
   web-service:
     image:  192.168.4.176:5000/bmsgroup/web-service:${TAG}
+    networks:
+      - hazelnet
     build:
       context: ./web-service
       dockerfile: Dockerfile
@@ -53,6 +63,8 @@ services:
         target: /config/web-service.yml
   zipkin:
     image:  192.168.4.176:5000/bmsgroup/zipkin:${TAG}
+    networks:
+      - hazelnet
     build:
       context: ./zipkin
       dockerfile: Dockerfile
@@ -63,6 +75,8 @@ services:
         target: /config/zipkin.yml
   grafana:
     image: grafana/grafana:$GRAFANA_VERSION
+    networks:
+      - hazelnet
     ports:
       - 3000:3000
     environment:
@@ -73,6 +87,8 @@ services:
         target: /etc/grafana/provisioning/datasource.yml
   prometheus:
     image: prom/prometheus:$PROMETHEUS_VERSION
+    networks:
+      - hazelnet
     ports:
       - 9090:9090
     configs:
@@ -80,6 +96,8 @@ services:
         target: /etc/prometheus/prometheus.yml
   elasticsearch:
     image:  192.168.4.176:5000/bmsgroup/elasticsearch:${TAG}
+    networks:
+      - hazelnet
     build:
       context: elasticsearch/
       args:
@@ -94,6 +112,8 @@ services:
         target: /usr/share/elasticsearch/config/elasticsearch.yml
   logstash:
     image:  192.168.4.176:5000/bmsgroup/logstash:${TAG}
+    networks:
+      - hazelnet
     build:
       context: logstash/
       args:
@@ -112,6 +132,8 @@ services:
         target: /usr/share/logstash/pipeline/logstash.conf
   kibana:
     image:  192.168.4.176:5000/bmsgroup/kibana:${TAG}
+    networks:
+      - hazelnet
     build:
       context: kibana/
       args:
@@ -149,3 +171,9 @@ configs:
     file: ./logstash/pipeline/logstash.conf
   kibana_config:
     file: ./kibana/config/kibana.yml
+
+networks:
+  hazelnet:
+    ipam:
+      config:
+        - subnet: 10.0.7.0/24
