@@ -1,0 +1,11 @@
+web-service:
+  image: bmsgroup/web-service
+  ports:
+    - 8080:8080
+  volumes:
+    - ./docker/config:/config
+
+
+
+
+

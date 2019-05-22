@@ -1,6 +1,7 @@
 package ru.bms.clientservice;
 
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import ru.bms.ClientRequest;
 import ru.bms.ClientResponse;
 import ru.bms.api.Account;
 import ru.bms.api.HelloResponse;
+import ru.bms.clientservice.data.AccountData;
 
 import java.math.BigDecimal;
 
@@ -17,7 +19,8 @@ import java.math.BigDecimal;
 @Log
 public class ClientController {
 
-    public static final BigDecimal AMOUNT = BigDecimal.TEN;
+    @Autowired
+    private ClientService clientService;
 
     @GetMapping("/")
     public Mono<String> help() {
@@ -34,6 +37,7 @@ public class ClientController {
     public Mono<ClientResponse> getClient(@RequestBody ClientRequest request) {
         log.info("post /getClient ");
         log.info(request.toString());
-        return Mono.just(ClientResponse.builder().account(Account.builder().amount(AMOUNT).build()).build());
+        AccountData accountData = clientService.findById(1);
+        return Mono.just(ClientResponse.builder().account(Account.builder().amount(accountData.getAmount()).build()).build());
     }
 }

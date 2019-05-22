@@ -23,8 +23,20 @@
     </modules>
     <properties>
         <java.version>1.8</java.version>
-        <spring-boot-dependencies.version>2.1.3.RELEASE</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>2.1.4.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
+        <rest-assured.version>3.3.0</rest-assured.version>
+        <testcontainers.version>1.11.2</testcontainers.version>
+        <hamcrest.version>2.1</hamcrest.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <lombok.version>1.18.8</lombok.version>
+        <junit.version>5.4.2</junit.version>
+        <junit-platform.version>1.4.2</junit-platform.version>
+        <postgresql.version>42.2.5</postgresql.version>
+        <hibernate.version>5.4.2.Final</hibernate.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -56,13 +68,86 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.4</version>
+                <version>${lombok.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>5.3</version>
             </dependency>
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>rest-assured</artifactId>
+                <version>${rest-assured.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>oracle-xe</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-commons</artifactId>
+                <version>${junit-platform.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-engine</artifactId>
+                <version>${junit-platform.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>
@@ -73,13 +158,23 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot-dependencies.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -90,6 +185,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*Integration*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Integration*.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

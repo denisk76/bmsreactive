@@ -116,3 +116,12 @@ services:
       - 5601:5601
     depends_on:
       - elasticsearch
+
+  staging:
+    image: 192.168.4.176:5000/bmsgroup/maven
+    volumes:
+      - ../:/some-files
+    environment:
+      - HOST_IP=web-service:8080
+    working_dir: /some-files
+    command: bash -c "mvn install -DskipTests && mvn failsafe:integration-test"

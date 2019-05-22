@@ -1,20 +1,15 @@
 spring:
   application:
-    name: client
+    name: terminal
   zipkin:
     service:
-      name: client-service
+      name: terminal-service
     sender:
       type: web
     base-url: http://zipkin:9411
   sleuth:
     sampler:
       probability: 1.0
-  datasource:
-    url: jdbc:postgresql://localhost/questionmarks
-    username: postgres
-    password: mysecretpassword
-    driver-class-name: org.postgresql.Driver
 server:
   port: 8080
 logging:
