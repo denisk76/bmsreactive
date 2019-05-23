@@ -1,13 +1,26 @@
 version: '3'
 
 services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "questionmarks"
+      POSTGRES_PASSWORD: "mysecretpassword"
+    volumes:
+      - ./postgres/init:/docker-entrypoint-initdb.d
   client-service:
     image: bmsgroup/client-service
     build:
       context: ./client-service
       dockerfile: Dockerfile
+    depends_on:
+      - postgres
     ports:
       - 8083:8080
+    environment:
+        WAIT_HOSTS: "postgres:5432"
     volumes:
       - ./client-service/docker/config:/config
   handler-service:
@@ -117,11 +130,3 @@ services:
     depends_on:
       - elasticsearch
 
-  staging:
-    image: 192.168.4.176:5000/bmsgroup/maven
-    volumes:
-      - ../:/some-files
-    environment:
-      - HOST_IP=web-service:8080
-    working_dir: /some-files
-    command: bash -c "mvn install -DskipTests && mvn failsafe:integration-test"

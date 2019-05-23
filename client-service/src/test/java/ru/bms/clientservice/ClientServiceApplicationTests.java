@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest
-@ContextConfiguration(classes = ClientServiceApplication.class)
+@ContextConfiguration(classes = {ClientServiceApplication.class, ClientTestConfig.class})
 public class ClientServiceApplicationTests {
 
     @Autowired

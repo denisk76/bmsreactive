@@ -11,10 +11,17 @@ spring:
     sampler:
       probability: 1.0
   datasource:
-    url: jdbc:postgresql://localhost/questionmarks
+    url: jdbc:postgresql://postgres/questionmarks
     username: postgres
     password: mysecretpassword
     driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    generate-ddl: true
 server:
   port: 8080
 logging:

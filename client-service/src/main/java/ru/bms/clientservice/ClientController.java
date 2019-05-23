@@ -12,8 +12,7 @@ import ru.bms.ClientResponse;
 import ru.bms.api.Account;
 import ru.bms.api.HelloResponse;
 import ru.bms.clientservice.data.AccountData;
-
-import java.math.BigDecimal;
+import ru.bms.clientservice.service.ClientService;
 
 @RestController
 @Log
