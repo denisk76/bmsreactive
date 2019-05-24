@@ -193,6 +193,8 @@
                 <configuration>
                     <excludes>
                         <exclude>**/*Integration*.java</exclude>
+                        <exclude>**/*ModuleTest.java</exclude>
+                        <exclude>**/*JpaTest.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -202,6 +204,8 @@
                 <configuration>
                     <includes>
                         <include>**/*Integration*.java</include>
+                        <include>**/*ModuleTest.java</include>
+                        <include>**/*JpaTest.java</include>
                     </includes>
                 </configuration>
             </plugin>
