@@ -17,29 +17,26 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.bms.clientservice.ClientServiceApplication;
 import ru.bms.clientservice.dao.AccountDataRepository;
 import ru.bms.clientservice.data.AccountData;
-import ru.bms.clientservice.pilot.ModuleTestConfig;
 import ru.bms.clientservice.service.ClientService;
 
-//@WebFluxTest
+import static ru.bms.PostgresConfig.*;
+
 @Testcontainers
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(classes = {ClientServiceApplication.class, JpaTestConfig.class})
 public class ClientServiceJpaTest {
-    public static final String POSTGRE_DATABASE_NAME = "questionmarks";
-    public static final String POSTGRE_USERNAME = "postgres";
-    public static final String POSTGRE_PASSWORD = "mysecretpassword";
     @Container
     static GenericContainer postgreSQLContainer = new PostgreSQLContainer()
-            .withDatabaseName(POSTGRE_DATABASE_NAME)
-            .withUsername(POSTGRE_USERNAME)
-            .withPassword(POSTGRE_PASSWORD)
+            .withDatabaseName(POSTGRES_DATABASE_NAME)
+            .withUsername(POSTGRES_USERNAME)
+            .withPassword(POSTGRES_PASSWORD)
             .withFileSystemBind("../postgres/init", "/docker-entrypoint-initdb.d", BindMode.READ_WRITE)
             .withNetworkAliases("postgres")
             .withLogConsumer(getConsumer("postgres"))
-            .withExposedPorts(5432);
+            .withExposedPorts(POSTGRES_PORT);
 
     private static Slf4jLogConsumer getConsumer(String webService) {
         return new Slf4jLogConsumer(log).withPrefix(webService);
@@ -54,8 +51,8 @@ public class ClientServiceJpaTest {
     @Test
     public void helloTest() {
         long count = accountDataRepository.count();
-        log.info("accounts count = "+count);
+        log.info("accounts count = " + count);
         AccountData accountData = clientService.findById(1);
-        log.info("amount for account with id = 1: "+accountData.getAmount());
+        log.info("amount for account with id = 1: " + accountData.getAmount());
     }
 }

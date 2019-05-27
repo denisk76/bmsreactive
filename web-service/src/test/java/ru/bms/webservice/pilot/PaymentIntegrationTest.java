@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static ru.bms.PostgresConfig.*;
 
 @Testcontainers
 @Slf4j
@@ -36,9 +37,6 @@ public class PaymentIntegrationTest {
     public static final String HANDLER_SERVICE = "handler-service";
     public static final String CLIENT_SERVICE = "client-service";
     public static final String BMSGROUP = "bmsgroup/";
-    public static final String POSTGRE_DATABASE_NAME = "questionmarks";
-    public static final String POSTGRE_USERNAME = "postgres";
-    public static final String POSTGRE_PASSWORD = "mysecretpassword";
     public static final int WEB_SERVICE_PORT = 8080;
     public static final int PAYMENT_SERVICE_PORT = 8080;
     public static final int TERMINAL_SERVICE_PORT = 8080;
@@ -69,9 +67,9 @@ public class PaymentIntegrationTest {
     }
     @Container
     static GenericContainer postgreSQLContainer = new PostgreSQLContainer()
-            .withDatabaseName(POSTGRE_DATABASE_NAME)
-            .withUsername(POSTGRE_USERNAME)
-            .withPassword(POSTGRE_PASSWORD)
+            .withDatabaseName(POSTGRES_DATABASE_NAME)
+            .withUsername(POSTGRES_USERNAME)
+            .withPassword(POSTGRES_PASSWORD)
             .withNetwork(network)
             .withFileSystemBind(TEST_RESOURCES_DOCKER + "/postgreSQL/init", "/docker-entrypoint-initdb.d", BindMode.READ_WRITE)
             .withNetworkAliases("postgres")

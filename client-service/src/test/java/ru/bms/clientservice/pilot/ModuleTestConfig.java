@@ -18,35 +18,29 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 import static ru.bms.clientservice.pilot.ClientServiceModuleTest.postgreSQLContainer;
+import static ru.bms.PostgresConfig.*;
+
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"ru.bms.clientservice.dao"})
 @EnableConfigurationProperties
 public class ModuleTestConfig {
+    public static final String postgresAddress = postgreSQLContainer.getContainerIpAddress() + ":" + postgreSQLContainer.getMappedPort(5432);
+    public static final String postgresUrl = "jdbc:postgresql://" + postgresAddress + "/questionmarks";
+
     @Bean
     public ClientService clientService() {
         return new ClientServiceImpl();
     }
 
-//    @Bean
-//    @Primary
-//    @ConfigurationProperties(prefix="spring.datasource")
-//    public DataSource dataSource() {
-//        return DataSourceBuilder.create()
-//                .driverClassName("org.postgresql.Driver")
-//                .build();
-//    }
-
-
     @Bean
     public DataSource dataSource() {
-        String postgresAddress = postgreSQLContainer.getContainerIpAddress() + ":" + postgreSQLContainer.getMappedPort(5432);
         System.out.println("postgresAddress = " + postgresAddress);
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUrl("jdbc:postgresql://"+postgresAddress+"/questionmarks");
-        ds.setUsername("postgres");
-        ds.setPassword("mysecretpassword");
+        ds.setDriverClassName(DRIVER_CLASS_NAME);
+        ds.setUrl(postgresUrl);
+        ds.setUsername(POSTGRES_USERNAME);
+        ds.setPassword(POSTGRES_PASSWORD);
         return ds;
     }
 

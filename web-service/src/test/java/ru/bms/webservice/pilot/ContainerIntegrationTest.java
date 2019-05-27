@@ -18,43 +18,21 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//@Testcontainers
+@Testcontainers
 @Slf4j
 public class ContainerIntegrationTest {
 
 
 
-    public static final String WEB_SERVICE = "web-service_1";
-    public static final String PAYMENT_SERVICE = "payment-service_1";
-    public static final String TERMINAL_SERVICE = "terminal-service_1";
-    public static final String HANDLER_SERVICE = "handler-service_1";
-    public static final int WEB_SERVICE_PORT = 8080;
-    public static final int PAYMENT_SERVICE_PORT = 8080;
-    public static final int TERMINAL_SERVICE_PORT = 8080;
-    public static final int HANDLER_SERVICE_PORT = 8080;
-
-//    @Container
-//    static DockerComposeContainer compose =
-//            new DockerComposeContainer(
-//                    new File("src/test/resources/simple-compose.yml")
-//            )
-//                    .withPull(false)
-//                    .withLogConsumer(WEB_SERVICE, new Slf4jLogConsumer(log).withPrefix(WEB_SERVICE))
-//                    .withExposedService(WEB_SERVICE, WEB_SERVICE_PORT, Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(40)))
-//                    .withExposedService(HANDLER_SERVICE, HANDLER_SERVICE_PORT)
-//                    .withExposedService(PAYMENT_SERVICE, PAYMENT_SERVICE_PORT)
-//                    .withExposedService(TERMINAL_SERVICE, TERMINAL_SERVICE_PORT)
-//            ;
-//@Container
+@Container
 public static GenericContainer compose
         = new GenericContainer("alpine:3.2")
         .withExposedPorts(80)
         .withCommand("/bin/sh", "-c", "while true; do echo "
                 + "\"HTTP/1.1 200 OK\n\nHello World!\" | nc -l -p 80; done");
-//    @Test
-//    @DisplayName("Test 1 2 3")
+    @Test
+    @DisplayName("Alpine Test")
     void test() {
-//        log.debug(compose.getServiceHost(WEB_SERVICE, WEB_SERVICE_PORT));
         log.info("container id: "+compose.getContainerId());
         log.info("container name: "+compose.getContainerName());
         log.info("container image name: "+compose.getDockerImageName());

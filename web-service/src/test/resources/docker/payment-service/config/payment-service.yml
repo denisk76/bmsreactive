@@ -2,14 +2,9 @@ spring:
   application:
     name: payment
   zipkin:
-    service:
-      name: payment-service
-    sender:
-      type: web
-    base-url: http://zipkin:9411
+    enabled: false
   sleuth:
-    sampler:
-      probability: 1.0
+    enabled: false
 server:
   port: 8080
 logging:

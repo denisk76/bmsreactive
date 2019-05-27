@@ -1,13 +1,32 @@
-version: '2'
+version: '3.7'
 
 services:
 
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "questionmarks"
+      POSTGRES_PASSWORD: "mysecretpassword"
+    volumes:
+      - ./docker/postgreSQL/init:/docker-entrypoint-initdb.d
+  client-service:
+    image: bmsgroup/client-service
+    depends_on:
+      - postgres
+    ports:
+      - 8083:8080
+    environment:
+      WAIT_HOSTS: "postgres:5432"
+    volumes:
+      - ./docker/client-service/config:/config
   web-service:
     image: bmsgroup/web-service
     ports:
       - 8080:8080
     volumes:
-      - ./docker/config:/config
+      - ./docker/web-service/config:/config
   terminal-service:
     image: bmsgroup/terminal-service
     ports:

@@ -26,24 +26,23 @@ import ru.bms.clientservice.ClientServiceApplication;
 
 import java.math.BigDecimal;
 
+import static ru.bms.PostgresConfig.*;
+
 @Testcontainers
 @Slf4j
 @WebFluxTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ClientServiceApplication.class, ModuleTestConfig.class})
 public class ClientServiceModuleTest {
-    public static final String POSTGRE_DATABASE_NAME = "questionmarks";
-    public static final String POSTGRE_USERNAME = "postgres";
-    public static final String POSTGRE_PASSWORD = "mysecretpassword";
     @Container
     static GenericContainer postgreSQLContainer = new PostgreSQLContainer()
-            .withDatabaseName(POSTGRE_DATABASE_NAME)
-            .withUsername(POSTGRE_USERNAME)
-            .withPassword(POSTGRE_PASSWORD)
+            .withDatabaseName(POSTGRES_DATABASE_NAME)
+            .withUsername(POSTGRES_USERNAME)
+            .withPassword(POSTGRES_PASSWORD)
             .withFileSystemBind("../postgres/init", "/docker-entrypoint-initdb.d", BindMode.READ_WRITE)
             .withNetworkAliases("postgres")
             .withLogConsumer(getConsumer("postgres"))
-            .withExposedPorts(5432);
+            .withExposedPorts(POSTGRES_PORT);
 
     private static Slf4jLogConsumer getConsumer(String webService) {
         return new Slf4jLogConsumer(log).withPrefix(webService);
