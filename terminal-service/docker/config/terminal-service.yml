@@ -12,9 +12,3 @@ spring:
       probability: 1.0
 server:
   port: 8080
-logging:
-  level:
-    org:
-      springframework:
-        cloud:
-          sleuth: DEBUG

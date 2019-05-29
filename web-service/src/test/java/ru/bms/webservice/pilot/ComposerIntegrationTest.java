@@ -34,7 +34,7 @@ public class ComposerIntegrationTest {
     public static final String PAYMENT_SERVICE = "payment-service_1";
     public static final String TERMINAL_SERVICE = "terminal-service_1";
     public static final String HANDLER_SERVICE = "handler-service_1";
-    public static final String CLIENT_SERVICE = "handler-service_1";
+    public static final String CLIENT_SERVICE = "client-service_1";
     public static final int WEB_SERVICE_PORT = 8080;
     public static final int PAYMENT_SERVICE_PORT = 8080;
     public static final int TERMINAL_SERVICE_PORT = 8080;
