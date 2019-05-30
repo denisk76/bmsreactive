@@ -38,6 +38,7 @@
         <junit-platform.version>1.4.2</junit-platform.version>
         <postgresql.version>42.2.5</postgresql.version>
         <hibernate.version>5.4.2.Final</hibernate.version>
+        <commons-lang3.version>3.9</commons-lang3.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -152,6 +153,11 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
 
         </dependencies>

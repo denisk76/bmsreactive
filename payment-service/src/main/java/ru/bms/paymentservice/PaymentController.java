@@ -27,7 +27,7 @@ public class PaymentController {
         log.info("post /getPayment");
         log.info(request.toString());
         return Mono.just(PaymentResponse.builder()
-                .account(Account.builder().amount(BigDecimal.TEN).build())
+                .account(Account.builder().amount(request.getAccount().getAmount().subtract(request.getBill().getSum())).build())
                 .bill(request.getBill())
                 .build());
     }

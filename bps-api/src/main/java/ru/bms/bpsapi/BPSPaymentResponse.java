@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import ru.bms.api.AbstractDto;
 
 import java.math.BigDecimal;
 
@@ -13,4 +16,9 @@ import java.math.BigDecimal;
 @Builder
 public class BPSPaymentResponse {
     private BigDecimal amount;
+    @Override
+    public String toString() {
+        ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);
+        return builder.build();
+    }
 }

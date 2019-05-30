@@ -26,7 +26,5 @@ server:
   port: 8080
 logging:
   level:
-    org:
-      springframework:
-        cloud:
-          sleuth: DEBUG
+    ROOT: WARN
+    ru.bms: DEBUG

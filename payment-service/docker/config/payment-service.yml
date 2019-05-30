@@ -10,14 +10,12 @@ spring:
   sleuth:
     sampler:
       probability: 1.0
-server:
-  port: 8080
 logging:
   level:
-    org:
-      springframework:
-        cloud:
-          sleuth: DEBUG
+    ROOT: WARN
+    ru.bms: DEBUG
+server:
+  port: 8080
 management:
   endpoints:
     web:

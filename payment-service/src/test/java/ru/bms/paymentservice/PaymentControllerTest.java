@@ -18,6 +18,8 @@ import ru.bms.paymentapi.PaymentResponse;
 
 import java.math.BigDecimal;
 
+import static ru.bms.DecimalUtils.d;
+
 @RunWith(SpringRunner.class)
 @WebFluxTest
 @ContextConfiguration(classes = PaymentServiceApplication.class)
@@ -40,17 +42,17 @@ public class PaymentControllerTest {
         webClient.post().uri("/getPayment").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         PaymentRequest.builder()
-                                .account(Account.builder().amount(BigDecimal.TEN).build())
-                                .bill(Bill.builder().sum(BigDecimal.TEN).build())
-                                .ruleUnit(RuleUnit.builder().percent(BigDecimal.valueOf(20)).build())
+                                .account(Account.builder().amount(d(10)).build())
+                                .bill(Bill.builder().sum(d(4)).build())
+                                .ruleUnit(RuleUnit.builder().percent(d(20)).build())
                                 .build()
                 ))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PaymentResponse.class)
                 .isEqualTo(PaymentResponse.builder()
-                        .bill(Bill.builder().sum(BigDecimal.TEN).build())
-                        .account(Account.builder().amount(BigDecimal.TEN).build())
+                        .bill(Bill.builder().sum(BigDecimal.valueOf(4)).build())
+                        .account(Account.builder().amount(d(6)).build())
                         .build());
     }
 

@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import ru.bms.api.AbstractDto;
 import ru.bms.api.Account;
 import ru.bms.api.Bill;
 import ru.bms.api.RuleUnit;
@@ -12,8 +15,13 @@ import ru.bms.api.RuleUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaymentRequest {
+public class PaymentRequest{
     private Account account;
     private RuleUnit ruleUnit;
     private Bill bill;
+    @Override
+    public String toString() {
+        ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);
+        return builder.build();
+    }
 }
