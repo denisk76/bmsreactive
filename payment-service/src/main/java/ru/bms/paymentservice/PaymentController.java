@@ -26,9 +26,20 @@ public class PaymentController {
     public Mono<PaymentResponse> payment(@RequestBody PaymentRequest request) {
         log.info("post /getPayment");
         log.info(request.toString());
+        BigDecimal sum = request.getBill().getSum()
+                .multiply(request.getRuleUnit().getPercent())
+                .divide(BigDecimal.valueOf(100))
+                ;
+        log.info("sum = "+sum);
+        BigDecimal amount = request.getAccount().getAmount().add(sum);
+        log.info("amount = "+amount);
         return Mono.just(PaymentResponse.builder()
-                .account(Account.builder().amount(request.getAccount().getAmount().subtract(request.getBill().getSum())).build())
+                .account(Account.builder()
+                        .amount(amount)
+                        .build())
                 .bill(request.getBill())
+                .earn(sum)
+                .spend(BigDecimal.ZERO)
                 .build());
     }
 

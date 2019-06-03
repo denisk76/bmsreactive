@@ -45,13 +45,13 @@ public class PaymentIntegrationTest {
 
     public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
             .cardNum("1234")
-            .terminalCode("345t")
-            .bill(Bill.builder().sum(BigDecimal.TEN).build())
+            .terminalCode("10")
+            .bill(Bill.builder().sum(BigDecimal.valueOf(120)).build())
             .build();
     public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
-            .amount(BigDecimal.TEN)
-            .earn(BigDecimal.ONE)
-            .spend(BigDecimal.ONE)
+            .amount(BigDecimal.valueOf(23))
+            .earn(BigDecimal.valueOf(12))
+            .spend(BigDecimal.ZERO)
             .build();
 
     @ClassRule

@@ -10,7 +10,7 @@ import ru.bms.handlerservice.service.TerminalService;
 import ru.bms.handlerservice.service.pilot.PilotClientService;
 import ru.bms.handlerservice.service.pilot.PilotPaymentService;
 import ru.bms.handlerservice.service.pilot.PilotTerminalService;
-import ru.bms.handlerservice.service.simple.SimplePaymentMapper;
+import ru.bms.handlerservice.service.pilot.SimplePaymentMapper;
 
 @Configuration
 public class HandlerConfig {

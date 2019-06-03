@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Log
 public class TerminalController {
 
-    public static final BigDecimal PERCENT = BigDecimal.valueOf(20);
+
 
     @GetMapping("/hello")
     public Mono<HelloResponse> hello() {
@@ -28,6 +28,13 @@ public class TerminalController {
     public Mono<TerminalResponse> getTerminal(@RequestBody TerminalRequest request) {
         log.info("post /getTerminal ");
         log.info(request.toString());
-        return Mono.just(TerminalResponse.builder().ruleUnit(RuleUnit.builder().percent(PERCENT).build()).build());
+        String code = request.getTerminal().getCode();
+        BigDecimal percent;
+        switch (code) {
+            case "10": percent = BigDecimal.TEN; break;
+            case "20": percent = BigDecimal.valueOf(20); break;
+            default: percent = BigDecimal.ONE; break;
+        }
+        return Mono.just(TerminalResponse.builder().ruleUnit(RuleUnit.builder().percent(percent).build()).build());
     }
 }

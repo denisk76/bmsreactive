@@ -10,6 +10,8 @@ import ru.bms.api.AbstractDto;
 import ru.bms.api.Account;
 import ru.bms.api.Bill;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +19,8 @@ import ru.bms.api.Bill;
 public class PaymentResponse{
     private Account account;
     private Bill bill;
+    private BigDecimal spend;
+    private BigDecimal earn;
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

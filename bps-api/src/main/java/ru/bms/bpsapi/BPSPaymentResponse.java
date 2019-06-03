@@ -16,6 +16,11 @@ import java.math.BigDecimal;
 @Builder
 public class BPSPaymentResponse {
     private BigDecimal amount;
+    /*накоплено в результате операции*/
+    private BigDecimal earn;
+    /*потрачено в результате операции*/
+    private BigDecimal spend;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

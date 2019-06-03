@@ -39,6 +39,8 @@
         <postgresql.version>42.2.5</postgresql.version>
         <hibernate.version>5.4.2.Final</hibernate.version>
         <commons-lang3.version>3.9</commons-lang3.version>
+        <mockserver.version>5.5.4</mockserver.version>
+        <mockito.version>2.28.2</mockito.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -158,6 +160,29 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mock-server</groupId>
+                <artifactId>mockserver-netty</artifactId>
+                <version>${mockserver.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mock-server</groupId>
+                <artifactId>mockserver-client-java</artifactId>
+                <version>${mockserver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>

@@ -1,4 +1,4 @@
-package ru.bms.handlerservice.service.simple;
+package ru.bms.handlerservice.service.pilot;
 
 import ru.bms.api.Account;
 import ru.bms.api.RuleUnit;
@@ -24,6 +24,8 @@ public class SimplePaymentMapper implements PaymentMapper {
     public BPSPaymentResponse mapResponse(PaymentResponse response) {
         return BPSPaymentResponse.builder()
                 .amount(response.getAccount().getAmount())
+                .earn(response.getEarn())
+                .spend(response.getSpend())
                 .build();
     }
 }

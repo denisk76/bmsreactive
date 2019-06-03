@@ -43,7 +43,7 @@ public class PaymentControllerTest {
                 .body(BodyInserters.fromObject(
                         PaymentRequest.builder()
                                 .account(Account.builder().amount(d(10)).build())
-                                .bill(Bill.builder().sum(d(4)).build())
+                                .bill(Bill.builder().sum(d(25)).build())
                                 .ruleUnit(RuleUnit.builder().percent(d(20)).build())
                                 .build()
                 ))
@@ -51,8 +51,10 @@ public class PaymentControllerTest {
                 .expectStatus().isOk()
                 .expectBody(PaymentResponse.class)
                 .isEqualTo(PaymentResponse.builder()
-                        .bill(Bill.builder().sum(BigDecimal.valueOf(4)).build())
-                        .account(Account.builder().amount(d(6)).build())
+                        .bill(Bill.builder().sum(BigDecimal.valueOf(25)).build())
+                        .account(Account.builder().amount(d(15)).build())
+                        .spend(BigDecimal.ZERO)
+                        .earn(BigDecimal.valueOf(5))
                         .build());
     }
 

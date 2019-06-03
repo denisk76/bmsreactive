@@ -22,7 +22,8 @@ import java.math.BigDecimal;
 @ContextConfiguration(classes = {TerminalServiceApplication.class})
 public class TerminalServiceApplicationTest {
 
-    public static final String TERMINAL_CODE = "123";
+    public static final String TERMINAL_CODE = "10";
+    public static final BigDecimal PERCENT = BigDecimal.valueOf(10);
     @Autowired
     private WebTestClient webClient;
 
@@ -47,7 +48,7 @@ public class TerminalServiceApplicationTest {
                 .expectStatus().isOk()
                 .expectBody(TerminalResponse.class)
                 .isEqualTo(TerminalResponse.builder()
-                        .ruleUnit(RuleUnit.builder().percent(BigDecimal.valueOf(20)).build())
+                        .ruleUnit(RuleUnit.builder().percent(PERCENT).build())
                         .build());
     }
 

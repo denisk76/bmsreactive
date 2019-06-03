@@ -1,12 +1,12 @@
 package ru.bms.handlerservice;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import ru.bms.api.BPSClient;
@@ -19,17 +19,21 @@ import ru.bms.bpsapi.BPSPaymentResponse;
 
 import java.math.BigDecimal;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebFluxTest
 @ContextConfiguration(classes = {HandlerServiceApplication.class, HandlerTestConfig.class})
-public class HandlerControllerTest {
+public class HandlerControllerTest extends BaseTest {
 
     public static final BPSPaymentOperation OPERATION = BPSPaymentOperation.builder()
             .data(BPSPaymentData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build())
             .terminal(Terminal.builder().code("123").build())
             .client(BPSClient.builder().cardNum("0000080012345678").build())
             .build();
-    public static final BPSPaymentResponse RESPONSE = BPSPaymentResponse.builder().amount(BigDecimal.TEN).build();
+    public static final BPSPaymentResponse RESPONSE = BPSPaymentResponse.builder()
+            .amount(BigDecimal.TEN)
+            .earn(BigDecimal.valueOf(5))
+            .spend(BigDecimal.ZERO)
+            .build();
     @Autowired
     WebTestClient webClient;
 

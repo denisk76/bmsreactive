@@ -17,8 +17,8 @@ public class SimplePaymentMapper implements PaymentMapper {
     public PutPaymentResponse mapResponse(BPSPaymentResponse response) {
         return PutPaymentResponse.builder()
                 .amount(response.getAmount())
-                .spend(BigDecimal.ONE)
-                .earn(BigDecimal.ONE)
+                .spend(response.getSpend())
+                .earn(response.getEarn())
                 .build();
     }
 
