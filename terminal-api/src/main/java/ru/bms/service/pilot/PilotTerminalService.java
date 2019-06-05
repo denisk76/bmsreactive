@@ -1,4 +1,4 @@
-package ru.bms.handlerservice.service.pilot;
+package ru.bms.service.pilot;
 
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.bms.TerminalRequest;
 import ru.bms.TerminalResponse;
-import ru.bms.handlerservice.service.TerminalService;
+import ru.bms.service.TerminalService;
 
 @Log
 public class PilotTerminalService implements TerminalService {

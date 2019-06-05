@@ -1,4 +1,4 @@
-package ru.bms.handlerservice.service.pilot;
+package ru.bms.service.pilot;
 
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.bms.ClientRequest;
 import ru.bms.ClientResponse;
-import ru.bms.handlerservice.service.ClientService;
+import ru.bms.service.ClientService;
 
 @Log
 public class PilotClientService implements ClientService {

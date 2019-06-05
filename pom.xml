@@ -41,6 +41,7 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <mockserver.version>5.5.4</mockserver.version>
         <mockito.version>2.28.2</mockito.version>
+        <spring-framework-bom.version>5.1.6.RELEASE</spring-framework-bom.version>
     </properties>
     <dependencyManagement>
         <dependencies>

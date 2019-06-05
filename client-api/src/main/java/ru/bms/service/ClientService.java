@@ -1,4 +1,4 @@
-package ru.bms.handlerservice.service;
+package ru.bms.service;
 
 import reactor.core.publisher.Mono;
 import ru.bms.ClientRequest;
