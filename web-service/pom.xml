@@ -91,6 +91,10 @@
         </dependency>
         <dependency>
             <groupId>ru.bms</groupId>
+            <artifactId>terminal-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.bms</groupId>
             <artifactId>common</artifactId>
         </dependency>
         <dependency>

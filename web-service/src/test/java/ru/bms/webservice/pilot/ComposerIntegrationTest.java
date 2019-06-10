@@ -5,16 +5,21 @@ import io.restassured.internal.mapping.ObjectMapperSerializationContextImpl;
 import io.restassured.mapper.factory.DefaultJackson2ObjectMapperFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.core.publisher.Mono;
+import ru.bms.AddTerminalRequest;
+import ru.bms.AddTerminalResponse;
 import ru.bms.api.Bill;
+import ru.bms.service.TerminalService;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
 
@@ -27,7 +32,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 @Testcontainers
 @Slf4j
+@WebFluxTest
+@ContextConfiguration(classes = {PilotTestConfig.class})
 public class ComposerIntegrationTest {
+
+    @Autowired
+    TerminalService terminalService;
 
 
     public static final String WEB_SERVICE = "web-service_1";
@@ -90,6 +100,7 @@ public class ComposerIntegrationTest {
     @Test
     @DisplayName("Payment test")
     void paymentTest() {
+
         logInfo(WEB_SERVICE, WEB_SERVICE_PORT);
         logInfo(HANDLER_SERVICE, HANDLER_SERVICE_PORT);
         logInfo(PAYMENT_SERVICE, PAYMENT_SERVICE_PORT);
@@ -101,6 +112,9 @@ public class ComposerIntegrationTest {
         context.setObject(REQUEST);
         String serialize = jackson2Mapper.serialize(context);
         System.out.println("serialize = " + serialize);
+        terminalService.setIpAddr(getIpAddr(compose, TERMINAL_SERVICE, TERMINAL_SERVICE_PORT));
+        Mono<AddTerminalResponse> addTerminalResponseMono = terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("10").percent(BigDecimal.valueOf(10)).build());
+        terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("20").percent(BigDecimal.valueOf(20)).build());
         given().body(REQUEST, new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory()))
                 .contentType("application/json")
                 .post(address)

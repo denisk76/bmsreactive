@@ -1,51 +1,19 @@
 package ru.bms.handlerservice;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
-import ru.bms.service.ClientService;
 import ru.bms.handlerservice.service.PaymentMapper;
-import ru.bms.paymentapi.service.PaymentService;
-import ru.bms.service.TerminalService;
-import ru.bms.service.pilot.PilotClientService;
-import ru.bms.paymentapi.service.pilot.PilotPaymentService;
-import ru.bms.service.pilot.PilotTerminalService;
 import ru.bms.handlerservice.service.pilot.SimplePaymentMapper;
 
 @Configuration
+@ComponentScan(basePackages = {"ru.bms.config"})
 public class HandlerConfig {
-    @Bean
-    public WebClient terminalWebClient() {
-        return WebClient.builder().baseUrl("http://terminal-service:8080").build();
-    }
-
-    @Bean
-    public WebClient clientWebClient() {
-        return WebClient.builder().baseUrl("http://client-service:8080").build();
-    }
-
-    @Bean
-    public WebClient paymentWebClient() {
-        return WebClient.builder().baseUrl("http://payment-service:8080").build();
-    }
-
-    @Bean
-    public PaymentService paymentService() {
-        return new PilotPaymentService();
-    }
 
     @Bean
     public PaymentMapper paymentMapper() {
         return new SimplePaymentMapper();
     }
 
-    @Bean
-    public ClientService clientService() {
-        return new PilotClientService();
-    }
 
-    @Bean
-    public TerminalService terminalService() {
-        return new PilotTerminalService();
-    }
 }

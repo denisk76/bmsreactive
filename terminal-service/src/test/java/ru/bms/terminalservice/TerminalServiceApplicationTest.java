@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,12 +21,15 @@ import java.math.BigDecimal;
 @RunWith(SpringRunner.class)
 @WebFluxTest
 @ContextConfiguration(classes = {TerminalServiceApplication.class})
+@ComponentScan(basePackages = {"ru.bms.terminalservice"})
 public class TerminalServiceApplicationTest {
 
     public static final String TERMINAL_CODE = "10";
     public static final BigDecimal PERCENT = BigDecimal.valueOf(10);
     @Autowired
     private WebTestClient webClient;
+    @Autowired
+    private TerminalManager terminalService;
 
     @Test
     public void testHello() throws Exception {
@@ -36,8 +40,12 @@ public class TerminalServiceApplicationTest {
                 .isEqualTo(HelloResponse.builder().message("Hello, my friend! I`m Terminal Controller.").build());
     }
 
+
+
     @Test
     public void testGetTerminal() throws Exception {
+        terminalService.add("10", BigDecimal.TEN);
+        terminalService.add("20", BigDecimal.valueOf(20));
         webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         TerminalRequest.builder()

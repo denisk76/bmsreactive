@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import ru.bms.api.AbstractDto;
 import ru.bms.api.BPSClient;
 import ru.bms.api.Terminal;
 

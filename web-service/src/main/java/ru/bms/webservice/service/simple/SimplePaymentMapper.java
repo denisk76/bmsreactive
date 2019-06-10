@@ -10,8 +10,6 @@ import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
 import ru.bms.webservice.service.PaymentMapper;
 
-import java.math.BigDecimal;
-
 public class SimplePaymentMapper implements PaymentMapper {
     @Override
     public PutPaymentResponse mapResponse(BPSPaymentResponse response) {

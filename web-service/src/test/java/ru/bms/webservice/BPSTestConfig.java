@@ -7,7 +7,6 @@ import ru.bms.webservice.service.PaymentMapper;
 import ru.bms.webservice.service.PaymentService;
 import ru.bms.webservice.service.pilot.PilotPaymentService;
 import ru.bms.webservice.service.simple.SimplePaymentMapper;
-import ru.bms.webservice.service.simple.SimplePaymentService;
 
 @Configuration
 public class BPSTestConfig {

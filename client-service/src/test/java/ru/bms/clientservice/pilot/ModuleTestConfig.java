@@ -17,8 +17,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static ru.bms.clientservice.pilot.ClientServiceModuleTest.postgreSQLContainer;
 import static ru.bms.PostgresConfig.*;
+import static ru.bms.clientservice.pilot.ClientServiceModuleTest.postgreSQLContainer;
 
 
 @Configuration

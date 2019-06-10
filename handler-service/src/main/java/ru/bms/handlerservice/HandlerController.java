@@ -14,11 +14,11 @@ import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
 import ru.bms.bpsapi.BPSPaymentOperation;
 import ru.bms.bpsapi.BPSPaymentResponse;
-import ru.bms.service.ClientService;
 import ru.bms.handlerservice.service.PaymentMapper;
-import ru.bms.paymentapi.service.PaymentService;
-import ru.bms.service.TerminalService;
 import ru.bms.paymentapi.PaymentRequest;
+import ru.bms.paymentapi.service.PaymentService;
+import ru.bms.service.ClientService;
+import ru.bms.service.TerminalService;
 
 @RestController
 @Log

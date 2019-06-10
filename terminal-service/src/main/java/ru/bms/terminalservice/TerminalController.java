@@ -1,11 +1,14 @@
 package ru.bms.terminalservice;
 
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import ru.bms.AddTerminalRequest;
+import ru.bms.AddTerminalResponse;
 import ru.bms.TerminalRequest;
 import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
@@ -17,7 +20,8 @@ import java.math.BigDecimal;
 @Log
 public class TerminalController {
 
-
+    @Autowired
+    TerminalManager terminalManager;
 
     @GetMapping("/hello")
     public Mono<HelloResponse> hello() {
@@ -30,11 +34,17 @@ public class TerminalController {
         log.info(request.toString());
         String code = request.getTerminal().getCode();
         BigDecimal percent;
-        switch (code) {
-            case "10": percent = BigDecimal.TEN; break;
-            case "20": percent = BigDecimal.valueOf(20); break;
-            default: percent = BigDecimal.ONE; break;
+        try {
+            percent = terminalManager.getByCode(code);
+        } catch (Exception e) {
+            percent = BigDecimal.ONE;
         }
         return Mono.just(TerminalResponse.builder().ruleUnit(RuleUnit.builder().percent(percent).build()).build());
+    }
+
+    @PostMapping("/addTerminal")
+    public Mono<AddTerminalResponse> addTerminal(@RequestBody AddTerminalRequest request) {
+        terminalManager.add(request.getTerminalCode(), request.getPercent());
+        return Mono.just(AddTerminalResponse.builder().state("SUCCESS").build());
     }
 }

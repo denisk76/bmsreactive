@@ -9,8 +9,8 @@ import ru.bms.clientservice.service.pilot.ClientServiceImpl;
 
 import javax.sql.DataSource;
 
-import static ru.bms.clientservice.jpa.ClientServiceJpaTest.postgreSQLContainer;
 import static ru.bms.PostgresConfig.*;
+import static ru.bms.clientservice.jpa.ClientServiceJpaTest.postgreSQLContainer;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"ru.bms.clientservice.dao"})

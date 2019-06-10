@@ -7,9 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.bms.paymentapi.service.PaymentService;
 import ru.bms.paymentapi.PaymentRequest;
 import ru.bms.paymentapi.PaymentResponse;
+import ru.bms.paymentapi.service.PaymentService;
 
 @Log
 public class PilotPaymentService implements PaymentService {
