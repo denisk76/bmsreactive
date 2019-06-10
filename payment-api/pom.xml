@@ -9,7 +9,6 @@
     </parent>
     <groupId>ru.bms</groupId>
     <artifactId>payment-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>payment-api</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>

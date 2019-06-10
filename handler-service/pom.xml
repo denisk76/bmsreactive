@@ -9,7 +9,6 @@
     </parent>
     <groupId>ru.bms</groupId>
     <artifactId>handler-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>handler-service</name>
     <description></description>
 
@@ -70,10 +69,6 @@
         <dependency>
             <groupId>ru.bms</groupId>
             <artifactId>payment-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ru.bms</groupId>
-            <artifactId>client-api</artifactId>
         </dependency>
         <dependency>
             <groupId>ru.bms</groupId>

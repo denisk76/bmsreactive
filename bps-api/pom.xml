@@ -9,7 +9,6 @@
     </parent>
     <groupId>ru.bms</groupId>
     <artifactId>bps-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>bps-api</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>

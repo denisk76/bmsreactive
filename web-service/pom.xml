@@ -9,7 +9,6 @@
     </parent>
     <groupId>ru.bms</groupId>
     <artifactId>web-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>web-service</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
