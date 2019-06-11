@@ -9,6 +9,10 @@ import org.junit.ClassRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
@@ -16,7 +20,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.bms.AddTerminalRequest;
 import ru.bms.api.Bill;
+import ru.bms.service.TerminalService;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
 
@@ -28,6 +34,8 @@ import static ru.bms.PostgresConfig.*;
 
 @Testcontainers
 @Slf4j
+@WebFluxTest
+@ContextConfiguration(classes = {PilotTestConfig.class})
 public class PaymentIntegrationTest {
 
     public static final String TEST_RESOURCES_DOCKER = "./src/test/resources/docker/";
@@ -42,6 +50,9 @@ public class PaymentIntegrationTest {
     public static final int TERMINAL_SERVICE_PORT = 8080;
     public static final int HANDLER_SERVICE_PORT = 8080;
     public static final int CLIENT_SERVICE_PORT = 8080;
+
+    @Autowired
+    TerminalService terminalService;
 
     public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
             .cardNum("1234")
@@ -122,6 +133,10 @@ public class PaymentIntegrationTest {
             logContainer(terminalContainer, TERMINAL_SERVICE, TERMINAL_SERVICE_PORT);
             logContainer(paymentContainer, PAYMENT_SERVICE, PAYMENT_SERVICE_PORT);
             logContainer(clientContainer, CLIENT_SERVICE, CLIENT_SERVICE_PORT);
+            terminalService.setIpAddr(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT));
+            terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("10").percent(BigDecimal.valueOf(10)).build()).block();
+            terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("20").percent(BigDecimal.valueOf(20)).build()).block();
+
             String address = getIpAddr(webContainer, WEB_SERVICE_PORT) + "/payment";
             Jackson2Mapper jackson2Mapper = new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory());
             ObjectMapperSerializationContextImpl context = new ObjectMapperSerializationContextImpl();

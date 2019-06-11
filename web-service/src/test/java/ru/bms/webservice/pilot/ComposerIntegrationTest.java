@@ -113,8 +113,8 @@ public class ComposerIntegrationTest {
         String serialize = jackson2Mapper.serialize(context);
         System.out.println("serialize = " + serialize);
         terminalService.setIpAddr(getIpAddr(compose, TERMINAL_SERVICE, TERMINAL_SERVICE_PORT));
-        Mono<AddTerminalResponse> addTerminalResponseMono = terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("10").percent(BigDecimal.valueOf(10)).build());
-        terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("20").percent(BigDecimal.valueOf(20)).build());
+        terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("10").percent(BigDecimal.valueOf(10)).build()).block();
+        terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("20").percent(BigDecimal.valueOf(20)).build()).block();
         given().body(REQUEST, new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory()))
                 .contentType("application/json")
                 .post(address)
