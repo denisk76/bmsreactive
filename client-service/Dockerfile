@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:12-jdk-alpine
 VOLUME /tmp
 ADD http://192.168.4.174:8081/artifactory/libs-release-local/wait /wait
 RUN chmod +x /wait

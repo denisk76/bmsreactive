@@ -7,13 +7,10 @@
         <artifactId>bms-reactive</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>ru.bms</groupId>
     <artifactId>zipkin</artifactId>
     <name>zipkin</name>
-    <description></description>
 
     <properties>
-        <java.version>1.8</java.version>
         <zipkin.version>2.12.2</zipkin.version>
     </properties>
     <dependencyManagement>

@@ -7,15 +7,10 @@
         <artifactId>bms-reactive</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>ru.bms</groupId>
     <artifactId>bps-api</artifactId>
     <name>bps-api</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
 

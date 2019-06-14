@@ -1,3 +1,3 @@
 mvn clean &&
-mvn install -Dmaven.test.skip=true &&
+mvn install &&
 docker-compose build
