@@ -2,7 +2,6 @@ package ru.bms.webservice.pilot;
 
 import io.restassured.internal.mapping.Jackson2Mapper;
 import io.restassured.internal.mapping.ObjectMapperSerializationContextImpl;
-import io.restassured.mapper.factory.DefaultJAXBObjectMapperFactory;
 import io.restassured.path.json.mapper.factory.DefaultJackson2ObjectMapperFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

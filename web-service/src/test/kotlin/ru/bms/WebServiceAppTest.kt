@@ -14,6 +14,7 @@ import ru.bms.api.HelloResponse
 import ru.bms.webservice.BPSTestConfig
 import ru.bms.webservice.BaseTest
 import ru.bms.webservice.WebServiceApplication
+import ru.bms.webservice.api.PutPaymentResponse
 
 @ExtendWith(SpringExtension::class)
 @WebFluxTest
@@ -43,15 +44,24 @@ class WebServiceAppTest :BaseTest() {
              }
             }
         """.trimIndent()
+
+        val response = """
+            {
+            "spend":4,
+            "earn":3,
+            "amount":10
+            }
+        """.trimIndent()
         web.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(payment))
                 .exchange()
                 .expectStatus().isOk
                 .expectBody()
+                .json(response)
                 .jsonPath("$.earn").isEqualTo(3)
-
-        println("1234")
+                .jsonPath("$.spend").isEqualTo(4)
+                .jsonPath("$.amount").isEqualTo(10)
     }
 
     @Test
