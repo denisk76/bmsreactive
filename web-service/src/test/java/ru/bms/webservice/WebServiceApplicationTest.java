@@ -35,13 +35,16 @@ public class WebServiceApplicationTest extends BaseTest {
 
     @Test
     public void testPayment() throws Exception {
+        PutPaymentRequest body = PutPaymentRequest.builder()
+                .cardNum("1234")
+                .terminalCode("345t")
+                .bill(Bill.builder().sum(BigDecimal.TEN).build())
+                .build();
+        System.out.println("body = " + body);
         webTestClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        PutPaymentRequest.builder()
-                                .cardNum("1234")
-                                .terminalCode("345t")
-                                .bill(Bill.builder().sum(BigDecimal.TEN).build())
-                                .build()))
+                        body.toString()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PutPaymentResponse.class)

@@ -2,7 +2,7 @@ package ru.bms.webservice.pilot;
 
 import io.restassured.internal.mapping.Jackson2Mapper;
 import io.restassured.internal.mapping.ObjectMapperSerializationContextImpl;
-import io.restassured.mapper.factory.DefaultJackson2ObjectMapperFactory;
+import io.restassured.path.json.mapper.factory.DefaultJackson2ObjectMapperFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.junit.ClassRule;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;

@@ -29,10 +29,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot-dependencies.version>2.1.4.RELEASE</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>2.1.6.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
-        <rest-assured.version>3.3.0</rest-assured.version>
-        <testcontainers.version>1.11.2</testcontainers.version>
+        <rest-assured.version>4.0.0</rest-assured.version>
+        <testcontainers.version>1.11.3</testcontainers.version>
         <hamcrest.version>2.1</hamcrest.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
@@ -42,13 +42,15 @@
         <junit.version>5.4.2</junit.version>
         <junit-platform.version>1.4.2</junit-platform.version>
         <postgresql.version>42.2.5</postgresql.version>
-        <hibernate.version>5.4.2.Final</hibernate.version>
+        <hibernate.version>5.4.3.Final</hibernate.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <mockserver.version>5.5.4</mockserver.version>
         <mockito.version>2.28.2</mockito.version>
-        <spring-framework-bom.version>5.1.6.RELEASE</spring-framework-bom.version>
-        <kotlin.version>1.3.31</kotlin.version>
+        <spring-framework-bom.version>5.1.8.RELEASE</spring-framework-bom.version>
+        <kotlin.version>1.3.40</kotlin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <jackson-module-kotlin.version>2.9.9</jackson-module-kotlin.version>
+        <logstash-logback-encoder.version>5.3</logstash-logback-encoder.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -90,11 +92,17 @@
             <dependency>
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
-                <version>5.3</version>
+                <version>${logstash-logback-encoder.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.rest-assured</groupId>
                 <artifactId>rest-assured</artifactId>
+                <version>${rest-assured.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.rest-assured</groupId>
+                <artifactId>json-path</artifactId>
                 <version>${rest-assured.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -199,9 +207,21 @@
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-reflect</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-allopen</artifactId>
                 <version>${kotlin.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-kotlin</artifactId>
+                <version>${jackson-module-kotlin.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>
