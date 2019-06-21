@@ -14,7 +14,7 @@ public class SimplePaymentMapper implements PaymentMapper {
     @Override
     public PaymentRequest mapRequest(BPSPaymentOperation operation) {
         PaymentRequest paymentRequest = new PaymentRequest();
-        paymentRequest.add(PaymentRequest.ParamType.RULE_UNIT,RuleUnit.builder().percent(BigDecimal.valueOf(20)).build());
+        paymentRequest.add(PaymentRequest.ParamType.RULE_UNIT, RuleUnit.builder().percent(BigDecimal.valueOf(20)).build());
         paymentRequest.add(PaymentRequest.ParamType.BILL, operation.getData().getBill());
         paymentRequest.add(PaymentRequest.ParamType.ACCOUNT, Account.builder().amount(BigDecimal.TEN).build());
         return paymentRequest;

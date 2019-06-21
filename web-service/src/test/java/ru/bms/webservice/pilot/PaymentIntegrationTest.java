@@ -75,6 +75,7 @@ public class PaymentIntegrationTest {
     private static String getPathToConfig(String serviceName) {
         return TEST_RESOURCES_DOCKER + serviceName + "/config";
     }
+
     @Container
     static GenericContainer postgreSQLContainer = new PostgreSQLContainer()
             .withDatabaseName(POSTGRES_DATABASE_NAME)
@@ -120,8 +121,7 @@ public class PaymentIntegrationTest {
 
         @Container
         private final GenericContainer clientContainer = getGenericContainer(CLIENT_SERVICE, CLIENT_SERVICE_PORT)
-                .withEnv("WAIT_HOSTS", "postgres:5432")
-                ;
+                .withEnv("WAIT_HOSTS", "postgres:5432");
 
         @DisplayName("Test web service")
         @Test

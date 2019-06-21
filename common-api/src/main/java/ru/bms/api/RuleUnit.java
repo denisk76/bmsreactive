@@ -14,11 +14,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RuleUnit extends ApiParameter{
+public class RuleUnit extends ApiParameter {
     private BigDecimal percent;
+
     public static RuleUnit fromJson(String json) throws IOException {
         return objectMapper.readValue(json, RuleUnit.class);
     }
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

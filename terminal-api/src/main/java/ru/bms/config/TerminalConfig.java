@@ -12,6 +12,7 @@ public class TerminalConfig {
     public WebClient terminalWebClient() {
         return WebClient.builder().baseUrl("http://terminal-service:8080").build();
     }
+
     @Bean
     public TerminalService terminalService() {
         return new PilotTerminalService();

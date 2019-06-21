@@ -1,5 +1,6 @@
 package ru.bms.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -8,12 +9,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class ApiRequest {
-    @Singular public Map<String, String> params;
+    @Singular
+    public Map<String, String> params;
 
     public ApiRequest() {
         params = new HashMap<>();
@@ -27,9 +29,9 @@ public class ApiRequest {
 //                ));
 //    }
 
-    public ApiRequest(Map<String, String> params) {
-        this.params = params;
-    }
+//    public ApiRequest(Map<String, String> params) {
+//        this.params = params;
+//    }
 
     public void add(String name, ApiParameter parameter) {
         params.put(name, parameter.toString());

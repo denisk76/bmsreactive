@@ -14,6 +14,7 @@ import ru.bms.api.BPSClient;
 @Builder
 public class ClientRequest {
     private BPSClient client;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

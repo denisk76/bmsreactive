@@ -14,6 +14,7 @@ import ru.bms.api.Account;
 @Builder
 public class ClientResponse {
     private Account account;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

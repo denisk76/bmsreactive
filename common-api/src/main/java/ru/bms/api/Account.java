@@ -12,11 +12,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class Account extends ApiParameter{
+public class Account extends ApiParameter {
     private BigDecimal amount;
+
     public static Account fromJson(String json) throws IOException {
         return objectMapper.readValue(json, Account.class);
     }
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

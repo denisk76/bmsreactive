@@ -12,6 +12,7 @@ public class ClientConfig {
     public WebClient clientWebClient() {
         return WebClient.builder().baseUrl("http://client-service:8080").build();
     }
+
     @Bean
     public ClientService clientService() {
         return new PilotClientService();

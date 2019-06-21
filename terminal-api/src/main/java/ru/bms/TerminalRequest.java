@@ -14,6 +14,7 @@ import ru.bms.api.Terminal;
 @Builder
 public class TerminalRequest {
     private Terminal terminal;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

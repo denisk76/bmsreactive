@@ -1,11 +1,10 @@
 package ru.bms.paymentapi;
 
-import lombok.*;
+import lombok.Data;
 import ru.bms.api.*;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 @Data
 public class PaymentResponse extends ApiResponse {
@@ -13,20 +12,19 @@ public class PaymentResponse extends ApiResponse {
         super(new HashMap<>());
     }
 
-    public PaymentResponse(Map<String, String> params) {
-        super(params);
-    }
-
-//    @Builder(builderMethodName = "paymentResponseBuilder")
-//    public PaymentResponse(Map<String, ApiParameter> params) {
+//    public PaymentResponse(Map<String, String> params) {
 //        super(params);
 //    }
 
-    public enum ParamType {
-    ACCOUNT,
-    BILL,
-    DELTA
-}
+    public Bill getBill() {
+        try {
+            return Bill.fromJson(get(ParamType.BILL.name()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void add(ParamType type, ApiParameter parameter) {
         add(type.name(), parameter);
     }
@@ -44,13 +42,10 @@ public class PaymentResponse extends ApiResponse {
         }
     }
 
-    public Bill getBill()  {
-        try {
-            return Bill.fromJson(get(ParamType.BILL.name()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public enum ParamType {
+        ACCOUNT,
+        BILL,
+        DELTA
     }
 
     public Delta getDelta() {
@@ -61,9 +56,4 @@ public class PaymentResponse extends ApiResponse {
             return null;
         }
     }
-
-//    private Account account;
-//    private Bill bill;
-//    private BigDecimal spend;
-//    private BigDecimal earn;
 }

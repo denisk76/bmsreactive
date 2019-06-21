@@ -41,7 +41,7 @@ public class PaymentController {
         paymentResponse.add(PaymentResponse.ParamType.DELTA, Delta.builder()
                 .earn(sum)
                 .spend(BigDecimal.ZERO)
-        .build());
+                .build());
         return Mono.just(paymentResponse);
     }
 

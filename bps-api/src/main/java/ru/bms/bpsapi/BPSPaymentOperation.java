@@ -17,6 +17,7 @@ public class BPSPaymentOperation {
     private BPSClient client;
     private Terminal terminal;
     private BPSPaymentData data;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

@@ -12,8 +12,9 @@ import ru.bms.api.Bill;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BPSPaymentData  {
+public class BPSPaymentData {
     private Bill bill;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

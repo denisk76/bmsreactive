@@ -14,6 +14,7 @@ import ru.bms.api.RuleUnit;
 @Builder
 public class TerminalResponse {
     private RuleUnit ruleUnit;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

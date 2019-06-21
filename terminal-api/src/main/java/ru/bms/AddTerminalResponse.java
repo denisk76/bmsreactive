@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Builder
 public class AddTerminalResponse {
     private String state;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

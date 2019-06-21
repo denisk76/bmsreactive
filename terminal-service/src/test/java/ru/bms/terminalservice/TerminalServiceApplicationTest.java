@@ -41,7 +41,6 @@ public class TerminalServiceApplicationTest {
     }
 
 
-
     @Test
     public void testGetTerminal() throws Exception {
         terminalService.add("10", BigDecimal.TEN);

@@ -29,7 +29,7 @@ public class TerminalSimpleManager implements TerminalManager {
 
     @Override
     public void add(String code, BigDecimal percent) {
-        log.info("put terminal with code = "+code);
+        log.info("put terminal with code = " + code);
         map.put(code, percent);
     }
 }

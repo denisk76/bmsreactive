@@ -69,13 +69,13 @@ public class ComposerIntegrationTest {
                     .withLogConsumer(WEB_SERVICE, getConsumer(WEB_SERVICE))
                     .withExposedService(WEB_SERVICE, WEB_SERVICE_PORT, Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
                     .withLogConsumer(HANDLER_SERVICE, getConsumer(HANDLER_SERVICE))
-                    .withExposedService(HANDLER_SERVICE, HANDLER_SERVICE_PORT,Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
+                    .withExposedService(HANDLER_SERVICE, HANDLER_SERVICE_PORT, Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
                     .withLogConsumer(PAYMENT_SERVICE, getConsumer(PAYMENT_SERVICE))
-                    .withExposedService(PAYMENT_SERVICE, PAYMENT_SERVICE_PORT,Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
+                    .withExposedService(PAYMENT_SERVICE, PAYMENT_SERVICE_PORT, Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
                     .withLogConsumer(TERMINAL_SERVICE, getConsumer(TERMINAL_SERVICE))
-                    .withExposedService(TERMINAL_SERVICE, TERMINAL_SERVICE_PORT,Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
+                    .withExposedService(TERMINAL_SERVICE, TERMINAL_SERVICE_PORT, Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)))
                     .withLogConsumer(CLIENT_SERVICE, getConsumer(CLIENT_SERVICE))
-                    .withExposedService(CLIENT_SERVICE, CLIENT_SERVICE_PORT,Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)));
+                    .withExposedService(CLIENT_SERVICE, CLIENT_SERVICE_PORT, Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(600)));
 
     private static Slf4jLogConsumer getConsumer(String serviceName) {
         return new Slf4jLogConsumer(log).withPrefix(serviceName);
@@ -92,7 +92,7 @@ public class ComposerIntegrationTest {
         String address = getIpAddr(compose, WEB_SERVICE, WEB_SERVICE_PORT) + "/hello";
         given().get(address)
                 .then().statusCode(200).assertThat()
-                .body("message",equalTo("Hello, my friend! I`m BPS Controller."));
+                .body("message", equalTo("Hello, my friend! I`m BPS Controller."));
     }
 
     @Test

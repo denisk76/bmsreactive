@@ -17,9 +17,11 @@ import java.math.BigDecimal;
 public class Delta extends ApiParameter {
     private BigDecimal spend;
     private BigDecimal earn;
+
     public static Delta fromJson(String json) throws IOException {
         return objectMapper.readValue(json, Delta.class);
     }
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

@@ -13,11 +13,11 @@ public class TerminalTestConfig {
     @Bean
     public WebClient terminalWebClient() {
         String ip_addr = System.getenv("IP_ADDR_SERVICE");
-        if(ip_addr == null) {
+        if (ip_addr == null) {
             log.info("IP_ADDR_SERVICE is null");
             ip_addr = "http://localhost:8000";
         } else {
-            log.info("IP_ADDR_SERVICE = "+ip_addr);
+            log.info("IP_ADDR_SERVICE = " + ip_addr);
         }
         return WebClient.builder().baseUrl(ip_addr).build();
     }

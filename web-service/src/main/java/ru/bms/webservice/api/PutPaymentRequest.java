@@ -19,6 +19,7 @@ public class PutPaymentRequest {
     private String terminalCode;
     /*чек с перечнем товаров*/
     private Bill bill;
+
     @Override
     public String toString() {
         ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);

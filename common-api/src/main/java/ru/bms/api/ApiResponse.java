@@ -1,28 +1,29 @@
 package ru.bms.api;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
-import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class ApiResponse {
-    @Singular Map<String, String> params;
+    @Singular
+    Map<String, String> params;
 
     public ApiResponse() {
         params = new HashMap<>();
     }
 
-    public ApiResponse(Map<String, String> params) {
-        this.params = params;
-    }
+//    public ApiResponse(Map<String, String> params) {
+//        this.params = params;
+//    }
 
 //    public ApiResponse(Map<String, ApiParameter> params) {
 //        this.params = params.entrySet().stream()

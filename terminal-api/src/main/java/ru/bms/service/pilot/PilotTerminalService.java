@@ -22,7 +22,7 @@ public class PilotTerminalService implements TerminalService {
 
     @Override
     public void setIpAddr(String ipAddr) {
-        log.info("set ip addr for terminal service: "+ipAddr);
+        log.info("set ip addr for terminal service: " + ipAddr);
         this.webClient = webClient.mutate().baseUrl(ipAddr).build();
     }
 
