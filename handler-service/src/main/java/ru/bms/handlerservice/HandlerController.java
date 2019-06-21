@@ -60,12 +60,12 @@ public class HandlerController {
     }
 
     private PaymentRequest addClient(PaymentRequest request, ClientResponse clientResponse) {
-        request.setAccount(clientResponse.getAccount());
+        request.add(PaymentRequest.ParamType.ACCOUNT, clientResponse.getAccount());
         return request;
     }
 
     private PaymentRequest addTerminal(PaymentRequest request, TerminalResponse terminalResponse) {
-        request.setRuleUnit(terminalResponse.getRuleUnit());
+        request.add(PaymentRequest.ParamType.RULE_UNIT, terminalResponse.getRuleUnit());
         return request;
     }
 }

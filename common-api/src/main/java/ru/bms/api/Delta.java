@@ -1,6 +1,9 @@
 package ru.bms.api;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,11 +14,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
-public class Account extends ApiParameter{
-    private BigDecimal amount;
-    public static Account fromJson(String json) throws IOException {
-        return objectMapper.readValue(json, Account.class);
+public class Delta extends ApiParameter {
+    private BigDecimal spend;
+    private BigDecimal earn;
+    public static Delta fromJson(String json) throws IOException {
+        return objectMapper.readValue(json, Delta.class);
     }
     @Override
     public String toString() {

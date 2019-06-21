@@ -7,6 +7,7 @@ import ru.bms.ClientResponse;
 import ru.bms.TerminalResponse;
 import ru.bms.api.Account;
 import ru.bms.api.Bill;
+import ru.bms.api.Delta;
 import ru.bms.api.RuleUnit;
 import ru.bms.paymentapi.PaymentResponse;
 
@@ -48,20 +49,21 @@ public class Expectations {
     }
 
     private static void getPayment(ClientAndServer mockServer) {
-        PaymentResponse response = PaymentResponse.builder()
-                .account(Account.builder().amount(BigDecimal.valueOf(10)).build())
-                .bill(Bill.builder().sum(BigDecimal.valueOf(10)).build())
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.add(PaymentResponse.ParamType.ACCOUNT, Account.builder().amount(BigDecimal.valueOf(10)).build());
+        paymentResponse.add(PaymentResponse.ParamType.BILL, Bill.builder().sum(BigDecimal.valueOf(10)).build());
+        paymentResponse.add(PaymentResponse.ParamType.DELTA, Delta.builder()
                 .earn(BigDecimal.valueOf(5))
                 .spend(BigDecimal.ZERO)
-                .build();
-        addPostExpect(mockServer, "/getPayment", response, "payment");
+                .build());
+        addPostExpect(mockServer, "/getPayment", paymentResponse, "payment");
     }
 
     private static void addPostExpect(ClientAndServer mockServer, String s, Object response, String name) {
         try {
             mockServer.when(request().withMethod("POST")
-                            .withHeader("Content-Type", HEADER_CONTENT_TYPE)
-                            .withPath(s)
+                    .withHeader("Content-Type", HEADER_CONTENT_TYPE)
+                    .withPath(s)
             ).respond(response().withStatusCode(200)
                     .withBody(objectMapper.writeValueAsString(response))
                     .withHeader("Content-Type", HEADER_CONTENT_TYPE)

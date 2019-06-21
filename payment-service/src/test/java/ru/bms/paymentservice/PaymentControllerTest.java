@@ -9,10 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import ru.bms.api.Account;
-import ru.bms.api.Bill;
-import ru.bms.api.HelloResponse;
-import ru.bms.api.RuleUnit;
+import ru.bms.api.*;
 import ru.bms.paymentapi.PaymentRequest;
 import ru.bms.paymentapi.PaymentResponse;
 
@@ -39,23 +36,24 @@ public class PaymentControllerTest {
 
     @Test
     public void paymentTest() {
+        PaymentRequest request = new PaymentRequest();
+        request.add(PaymentRequest.ParamType.ACCOUNT, Account.builder().amount(d(10)).build());
+        request.add(PaymentRequest.ParamType.BILL, Bill.builder().sum(d(25)).build());
+        request.add(PaymentRequest.ParamType.RULE_UNIT, RuleUnit.builder().percent(d(20)).build());
+
+        PaymentResponse response = new PaymentResponse();
+        response.add(PaymentResponse.ParamType.BILL, Bill.builder().sum(BigDecimal.valueOf(25)).build());
+        response.add(PaymentResponse.ParamType.ACCOUNT, Account.builder().amount(d(15)).build());
+        response.add(PaymentResponse.ParamType.DELTA, Delta.builder().spend(BigDecimal.ZERO).earn(BigDecimal.valueOf(5)).build());
+
         webClient.post().uri("/getPayment").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        PaymentRequest.builder()
-                                .account(Account.builder().amount(d(10)).build())
-                                .bill(Bill.builder().sum(d(25)).build())
-                                .ruleUnit(RuleUnit.builder().percent(d(20)).build())
-                                .build()
+                        request
                 ))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(PaymentResponse.class)
-                .isEqualTo(PaymentResponse.builder()
-                        .bill(Bill.builder().sum(BigDecimal.valueOf(25)).build())
-                        .account(Account.builder().amount(d(15)).build())
-                        .spend(BigDecimal.ZERO)
-                        .earn(BigDecimal.valueOf(5))
-                        .build());
+                .isEqualTo(response);
     }
 
 }

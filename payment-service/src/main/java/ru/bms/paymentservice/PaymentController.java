@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.bms.api.Account;
+import ru.bms.api.Delta;
 import ru.bms.api.HelloResponse;
 import ru.bms.paymentapi.PaymentRequest;
 import ru.bms.paymentapi.PaymentResponse;
@@ -28,19 +29,20 @@ public class PaymentController {
         log.info(request.toString());
         BigDecimal sum = request.getBill().getSum()
                 .multiply(request.getRuleUnit().getPercent())
-                .divide(BigDecimal.valueOf(100))
-                ;
-        log.info("sum = "+sum);
+                .divide(BigDecimal.valueOf(100));
+        log.info("sum = " + sum);
         BigDecimal amount = request.getAccount().getAmount().add(sum);
-        log.info("amount = "+amount);
-        return Mono.just(PaymentResponse.builder()
-                .account(Account.builder()
-                        .amount(amount)
-                        .build())
-                .bill(request.getBill())
+        log.info("amount = " + amount);
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.add(PaymentResponse.ParamType.ACCOUNT, Account.builder()
+                .amount(amount)
+                .build());
+        paymentResponse.add(PaymentResponse.ParamType.BILL, request.getBill());
+        paymentResponse.add(PaymentResponse.ParamType.DELTA, Delta.builder()
                 .earn(sum)
                 .spend(BigDecimal.ZERO)
-                .build());
+        .build());
+        return Mono.just(paymentResponse);
     }
 
 }

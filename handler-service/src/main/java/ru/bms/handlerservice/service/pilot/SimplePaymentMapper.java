@@ -13,19 +13,19 @@ import java.math.BigDecimal;
 public class SimplePaymentMapper implements PaymentMapper {
     @Override
     public PaymentRequest mapRequest(BPSPaymentOperation operation) {
-        return PaymentRequest.builder()
-                .ruleUnit(RuleUnit.builder().percent(BigDecimal.valueOf(20)).build())
-                .bill(operation.getData().getBill())
-                .account(Account.builder().amount(BigDecimal.TEN).build())
-                .build();
+        PaymentRequest paymentRequest = new PaymentRequest();
+        paymentRequest.add(PaymentRequest.ParamType.RULE_UNIT,RuleUnit.builder().percent(BigDecimal.valueOf(20)).build());
+        paymentRequest.add(PaymentRequest.ParamType.BILL, operation.getData().getBill());
+        paymentRequest.add(PaymentRequest.ParamType.ACCOUNT, Account.builder().amount(BigDecimal.TEN).build());
+        return paymentRequest;
     }
 
     @Override
     public BPSPaymentResponse mapResponse(PaymentResponse response) {
         return BPSPaymentResponse.builder()
                 .amount(response.getAccount().getAmount())
-                .earn(response.getEarn())
-                .spend(response.getSpend())
+                .earn(response.getDelta().getEarn())
+                .spend(response.getDelta().getSpend())
                 .build();
     }
 }
