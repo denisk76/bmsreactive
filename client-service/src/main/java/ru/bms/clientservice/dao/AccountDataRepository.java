@@ -9,4 +9,5 @@ import ru.bms.clientservice.data.AccountData;
 @Repository
 @Transactional
 public interface AccountDataRepository extends CrudRepository<AccountData, Long> {
+    AccountData findByCardNum(String cardNum);
 }

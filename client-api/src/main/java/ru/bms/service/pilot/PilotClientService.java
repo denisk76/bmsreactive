@@ -7,6 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import ru.bms.AddClientRequest;
+import ru.bms.AddClientResponse;
 import ru.bms.ClientRequest;
 import ru.bms.ClientResponse;
 import ru.bms.service.ClientService;
@@ -19,11 +21,26 @@ public class PilotClientService implements ClientService {
     WebClient webClient;
 
     @Override
+    public void setIpAddr(String ipAddr) {
+        log.info("set ip addr for client service: " + ipAddr);
+        this.webClient = webClient.mutate().baseUrl(ipAddr).build();
+    }
+
+    @Override
     public Mono<ClientResponse> getClient(ClientRequest request) {
         log.info("Pilot Client Service run getClient ...");
         log.info(request.toString());
         return webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(request))
                 .retrieve().bodyToMono(ClientResponse.class);
+    }
+
+    @Override
+    public Mono<AddClientResponse> addClient(AddClientRequest request) {
+        log.info("Pilot Client Service run addClient ...");
+        log.info(request.toString());
+        return webClient.post().uri("/addClient").accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(request))
+                .retrieve().bodyToMono(AddClientResponse.class);
     }
 }

@@ -19,6 +19,8 @@ import ru.bms.clientservice.dao.AccountDataRepository;
 import ru.bms.clientservice.data.AccountData;
 import ru.bms.clientservice.service.ClientService;
 
+import java.math.BigDecimal;
+
 import static ru.bms.PostgresConfig.*;
 
 @Testcontainers
@@ -50,9 +52,10 @@ public class ClientServiceJpaTest {
 
     @Test
     public void helloTest() {
+        clientService.add("0000080012341234", BigDecimal.TEN);
         long count = accountDataRepository.count();
         log.info("accounts count = " + count);
-        AccountData accountData = clientService.findById(1);
+        AccountData accountData = clientService.findByCardNum("0000080012341234");
         log.info("amount for account with id = 1: " + accountData.getAmount());
     }
 }

@@ -23,6 +23,7 @@ import ru.bms.api.Account;
 import ru.bms.api.BPSClient;
 import ru.bms.api.HelloResponse;
 import ru.bms.clientservice.ClientServiceApplication;
+import ru.bms.clientservice.service.ClientService;
 
 import java.math.BigDecimal;
 
@@ -50,6 +51,8 @@ public class ClientServiceModuleTest {
 
     @Autowired
     WebTestClient webClient;
+    @Autowired
+    ClientService clientService;
 
 
     @Test
@@ -64,10 +67,11 @@ public class ClientServiceModuleTest {
 
     @Test
     public void getClientTest() {
+        clientService.add("0000080012341234", BigDecimal.TEN);
         webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         ClientRequest.builder()
-                                .client(BPSClient.builder().cardNum("00000800012345678").build())
+                                .client(BPSClient.builder().cardNum("0000080012341234").build())
                                 .build()
                 ))
                 .exchange()

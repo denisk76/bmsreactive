@@ -19,8 +19,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.bms.AddClientRequest;
 import ru.bms.AddTerminalRequest;
 import ru.bms.api.Bill;
+import ru.bms.service.ClientService;
 import ru.bms.service.TerminalService;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
@@ -52,17 +54,19 @@ public class PaymentIntegrationTest {
 
     @Autowired
     TerminalService terminalService;
+    public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
+            .amount(BigDecimal.valueOf(22))
+            .earn(BigDecimal.valueOf(12))
+            .spend(BigDecimal.ZERO)
+            .build();
 
     public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
             .cardNum("1234")
             .terminalCode("10")
             .bill(Bill.builder().sum(BigDecimal.valueOf(120)).build())
             .build();
-    public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
-            .amount(BigDecimal.valueOf(23))
-            .earn(BigDecimal.valueOf(12))
-            .spend(BigDecimal.ZERO)
-            .build();
+    @Autowired
+    ClientService clientService;
 
     @ClassRule
     static Network network = Network.newNetwork();
@@ -135,6 +139,11 @@ public class PaymentIntegrationTest {
             terminalService.setIpAddr(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT));
             terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("10").percent(BigDecimal.valueOf(10)).build()).block();
             terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("20").percent(BigDecimal.valueOf(20)).build()).block();
+            clientService.setIpAddr(getIpAddr(clientContainer, CLIENT_SERVICE_PORT));
+            clientService.addClient(AddClientRequest.builder()
+                    .amount(BigDecimal.TEN)
+                    .cardNum("1234")
+                    .build()).block();
 
             String address = getIpAddr(webContainer, WEB_SERVICE_PORT) + "/payment";
             Jackson2Mapper jackson2Mapper = new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory());

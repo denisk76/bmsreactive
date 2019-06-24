@@ -1,6 +1,18 @@
 version: '3.3'
 
 services:
+  postgres:
+    image: postgres
+    networks:
+      - hazelnet
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "questionmarks"
+      POSTGRES_PASSWORD: "mysecretpassword"
+    configs:
+      - source: postgres_config
+      - target: /docker-entrypoint-initdb.d/init.sql
   client-service:
     image: 192.168.4.176:5000/bmsgroup/client-service:${TAG}
     networks:
@@ -10,6 +22,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8083:8080
+    environment:
+      WAIT_HOSTS: "postgres:5432"
+      WAIT_HOSTS_TIMEOUT: "120"
     configs:
       - source: client_config
         target: /config/client-service.yml
@@ -191,6 +206,8 @@ configs:
     file: ./logstash/pipeline/logstash.conf
   kibana_config:
     file: ./kibana/config/kibana.yml
+  postgres_config:
+    file: ./postgres/init/init.sql
 
 networks:
   hazelnet:

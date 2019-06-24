@@ -17,5 +17,6 @@ import java.math.BigDecimal;
 public class AccountData {
     @Id
     private long id;
+    private String cardNum;
     private BigDecimal amount;
 }

@@ -90,6 +90,10 @@
         </dependency>
         <dependency>
             <groupId>ru.bms</groupId>
+            <artifactId>client-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.bms</groupId>
             <artifactId>common</artifactId>
         </dependency>
         <dependency>
