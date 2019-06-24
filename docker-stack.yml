@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: "mysecretpassword"
     configs:
       - source: postgres_config
-      - target: /docker-entrypoint-initdb.d/init.sql
+        target: /docker-entrypoint-initdb.d/init.sql
   client-service:
     image: 192.168.4.176:5000/bmsgroup/client-service:${TAG}
     networks:
