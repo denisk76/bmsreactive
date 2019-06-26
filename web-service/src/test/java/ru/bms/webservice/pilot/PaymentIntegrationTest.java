@@ -19,8 +19,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.bms.AddClientRequest;
-import ru.bms.AddTerminalRequest;
+import ru.bms.PaymentIntegrationConst;
 import ru.bms.api.Bill;
 import ru.bms.service.ClientService;
 import ru.bms.service.TerminalService;
@@ -120,6 +119,15 @@ public class PaymentIntegrationTest {
         log.info(serviceName + " " + port + " mapped " + container.getMappedPort(port));
     }
 
+    private String convertObjectToString(Object o) {
+        Jackson2Mapper jackson2Mapper = new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory());
+        ObjectMapperSerializationContextImpl context = new ObjectMapperSerializationContextImpl();
+        context.setObject(o);
+        String serialize = jackson2Mapper.serialize(context);
+        System.out.println("serialize = " + serialize);
+        return serialize;
+    }
+
     @Nested
     class NestedTest {
 
@@ -136,24 +144,16 @@ public class PaymentIntegrationTest {
             logContainer(terminalContainer, TERMINAL_SERVICE, TERMINAL_SERVICE_PORT);
             logContainer(paymentContainer, PAYMENT_SERVICE, PAYMENT_SERVICE_PORT);
             logContainer(clientContainer, CLIENT_SERVICE, CLIENT_SERVICE_PORT);
-            terminalService.setIpAddr(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT));
-            terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("10").percent(BigDecimal.valueOf(10)).build()).block();
-            terminalService.addTerminal(AddTerminalRequest.builder().terminalCode("20").percent(BigDecimal.valueOf(20)).build()).block();
-            clientService.setIpAddr(getIpAddr(clientContainer, CLIENT_SERVICE_PORT));
-            clientService.addClient(AddClientRequest.builder()
-                    .amount(BigDecimal.TEN)
-                    .cardNum("1234")
-                    .build()).block();
 
-            String address = getIpAddr(webContainer, WEB_SERVICE_PORT) + "/payment";
-            Jackson2Mapper jackson2Mapper = new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory());
-            ObjectMapperSerializationContextImpl context = new ObjectMapperSerializationContextImpl();
-            context.setObject(REQUEST);
-            String serialize = jackson2Mapper.serialize(context);
-            System.out.println("serialize = " + serialize);
+            terminalService.setIpAddr(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT));
+            clientService.setIpAddr(getIpAddr(clientContainer, CLIENT_SERVICE_PORT));
+
+            terminalService.addTerminals(PaymentIntegrationConst.CLUB_DATA);
+            clientService.addClients(PaymentIntegrationConst.CLIENTS_DATA);
+
             given().body(REQUEST, new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory()))
                     .contentType("application/json")
-                    .post(address)
+                    .post(getIpAddr(webContainer, WEB_SERVICE_PORT) + "/payment")
                     .then().log().all()
                     .statusCode(200)
                     .assertThat().log().body()

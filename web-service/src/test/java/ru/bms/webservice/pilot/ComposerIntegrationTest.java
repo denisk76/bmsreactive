@@ -44,7 +44,6 @@ public class ComposerIntegrationTest {
             .spend(BigDecimal.ZERO)
             .build();
 
-
     private static final String WEB_SERVICE = "web-service_1";
     private static final String PAYMENT_SERVICE = "payment-service_1";
     private static final String TERMINAL_SERVICE = "terminal-service_1";

@@ -12,4 +12,6 @@ public interface ClientService {
     Mono<ClientResponse> getClient(ClientRequest request);
 
     Mono<AddClientResponse> addClient(AddClientRequest request);
+
+    void addClients(String request);
 }

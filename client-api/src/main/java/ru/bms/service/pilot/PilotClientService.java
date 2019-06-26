@@ -1,6 +1,7 @@
 package ru.bms.service.pilot;
 
 import lombok.extern.java.Log;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -42,5 +43,20 @@ public class PilotClientService implements ClientService {
         return webClient.post().uri("/addClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(request))
                 .retrieve().bodyToMono(AddClientResponse.class);
+    }
+
+    @Override
+    public void addClients(String request) {
+        log.info("Pilot Client Service run addClient ...");
+        log.info(request);
+        JSONArray jsonArray = new JSONArray(request);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            String json = jsonArray.get(i).toString();
+            System.out.println("Send json: " + json);
+            webClient.post().uri("/addClient").accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromObject(json))
+                    .retrieve().bodyToMono(AddClientResponse.class).block();
+        }
     }
 }

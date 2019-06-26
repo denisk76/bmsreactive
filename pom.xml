@@ -52,6 +52,7 @@
         <jackson-module-kotlin.version>2.9.9</jackson-module-kotlin.version>
         <logstash-logback-encoder.version>5.3</logstash-logback-encoder.version>
         <jackson-databind.version>2.9.9</jackson-databind.version>
+        <json.version>20180813</json.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -239,6 +240,12 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson-databind.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <build>
@@ -269,6 +276,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven-resources-plugin.version}</version>
                 </plugin>
+
             </plugins>
         </pluginManagement>
         <plugins>

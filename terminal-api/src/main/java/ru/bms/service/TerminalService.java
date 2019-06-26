@@ -12,4 +12,6 @@ public interface TerminalService {
     Mono<TerminalResponse> getTerminal(TerminalRequest request);
 
     Mono<AddTerminalResponse> addTerminal(AddTerminalRequest request);
+
+    void addTerminals(String request);
 }
