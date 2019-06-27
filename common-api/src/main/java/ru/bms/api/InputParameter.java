@@ -2,10 +2,10 @@ package ru.bms.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public abstract class ApiParameter {
+public abstract class InputParameter {
     protected static ObjectMapper objectMapper;
 
-    public ApiParameter() {
+    public InputParameter() {
         objectMapper = new ObjectMapper();
     }
 }
