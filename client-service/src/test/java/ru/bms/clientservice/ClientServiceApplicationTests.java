@@ -10,8 +10,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import ru.bms.ClientRequest;
 import ru.bms.ClientResponse;
 import ru.bms.api.Account;
-import ru.bms.api.BPSClient;
 import ru.bms.api.HelloResponse;
+import ru.bms.api.IClient;
 
 import java.math.BigDecimal;
 
@@ -36,7 +36,7 @@ public class ClientServiceApplicationTests {
         webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         ClientRequest.builder()
-                                .client(BPSClient.builder().cardNum("00000800012345678").build())
+                                .client(IClient.builder().cardNum("00000800012345678").build())
                                 .build()
                 ))
                 .exchange()

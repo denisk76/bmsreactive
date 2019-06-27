@@ -1,7 +1,7 @@
 package ru.bms.webservice.service.simple;
 
-import ru.bms.api.BPSClient;
 import ru.bms.api.Bill;
+import ru.bms.api.IClient;
 import ru.bms.api.Terminal;
 import ru.bms.bpsapi.BPSPaymentData;
 import ru.bms.bpsapi.BPSPaymentOperation;
@@ -23,7 +23,7 @@ public class SimplePaymentMapper implements PaymentMapper {
     @Override
     public BPSPaymentOperation mapRequest(PutPaymentRequest request) {
         return BPSPaymentOperation.builder()
-                .client(BPSClient.builder().cardNum(request.getCardNum()).build())
+                .client(IClient.builder().cardNum(request.getCardNum()).build())
                 .terminal(Terminal.builder().code(request.getTerminalCode()).build())
                 .data(BPSPaymentData.builder().bill(Bill.builder().sum(request.getBill().getSum()).build()).build())
                 .build();

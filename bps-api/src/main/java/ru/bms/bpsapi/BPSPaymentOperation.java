@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import ru.bms.api.BPSClient;
+import ru.bms.api.IClient;
 import ru.bms.api.Terminal;
 
 @Data
@@ -14,7 +14,7 @@ import ru.bms.api.Terminal;
 @AllArgsConstructor
 @Builder
 public class BPSPaymentOperation {
-    private BPSClient client;
+    private IClient client;
     private Terminal terminal;
     private BPSPaymentData data;
 

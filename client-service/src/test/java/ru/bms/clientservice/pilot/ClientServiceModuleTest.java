@@ -20,8 +20,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.bms.ClientRequest;
 import ru.bms.ClientResponse;
 import ru.bms.api.Account;
-import ru.bms.api.BPSClient;
 import ru.bms.api.HelloResponse;
+import ru.bms.api.IClient;
 import ru.bms.clientservice.ClientServiceApplication;
 import ru.bms.clientservice.service.ClientService;
 
@@ -71,7 +71,7 @@ public class ClientServiceModuleTest {
         webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         ClientRequest.builder()
-                                .client(BPSClient.builder().cardNum("0000080012341234").build())
+                                .client(IClient.builder().cardNum("0000080012341234").build())
                                 .build()
                 ))
                 .exchange()

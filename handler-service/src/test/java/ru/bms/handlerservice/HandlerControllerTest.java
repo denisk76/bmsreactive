@@ -9,9 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import ru.bms.api.BPSClient;
 import ru.bms.api.Bill;
 import ru.bms.api.HelloResponse;
+import ru.bms.api.IClient;
 import ru.bms.api.Terminal;
 import ru.bms.bpsapi.BPSPaymentData;
 import ru.bms.bpsapi.BPSPaymentOperation;
@@ -27,7 +27,7 @@ public class HandlerControllerTest extends BaseTest {
     public static final BPSPaymentOperation OPERATION = BPSPaymentOperation.builder()
             .data(BPSPaymentData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build())
             .terminal(Terminal.builder().code("123").build())
-            .client(BPSClient.builder().cardNum("0000080012345678").build())
+            .client(IClient.builder().cardNum("0000080012345678").build())
             .build();
     public static final BPSPaymentResponse RESPONSE = BPSPaymentResponse.builder()
             .amount(BigDecimal.TEN)
