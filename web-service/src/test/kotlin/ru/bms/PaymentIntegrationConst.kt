@@ -14,5 +14,17 @@ class PaymentIntegrationConst {
            { "cardNum":"1235", "amount":20}
            ]
         """
+        const val REQUEST = """
+            [
+           { "cardNum":"1234", "terminalCode":"10", "bill":{"sum":120} },
+           { "cardNum":"1234", "terminalCode":"20", "bill":{"sum":120} }
+           ]
+        """
+        const val RESPONSE = """
+            [
+           { "amount":22, "earn":12, "spend":0 },
+           { "amount":34, "earn":24, "spend":0 }
+           ]
+        """
     }
 }

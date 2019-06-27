@@ -5,6 +5,8 @@ import io.restassured.internal.mapping.ObjectMapperSerializationContextImpl;
 import io.restassured.path.json.mapper.factory.DefaultJackson2ObjectMapperFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.junit.ClassRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,17 +22,15 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.bms.PaymentIntegrationConst;
-import ru.bms.api.Bill;
 import ru.bms.service.ClientService;
 import ru.bms.service.TerminalService;
-import ru.bms.webservice.api.PutPaymentRequest;
-import ru.bms.webservice.api.PutPaymentResponse;
-
-import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.bms.PaymentIntegrationConst.REQUEST;
+import static ru.bms.PaymentIntegrationConst.RESPONSE;
 import static ru.bms.PostgresConfig.*;
+import static ru.bms.webservice.IsEqualJSON.equalToJson;
 
 @Testcontainers
 @Slf4j
@@ -53,17 +53,17 @@ public class PaymentIntegrationTest {
 
     @Autowired
     TerminalService terminalService;
-    public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
-            .amount(BigDecimal.valueOf(22))
-            .earn(BigDecimal.valueOf(12))
-            .spend(BigDecimal.ZERO)
-            .build();
-
-    public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
-            .cardNum("1234")
-            .terminalCode("10")
-            .bill(Bill.builder().sum(BigDecimal.valueOf(120)).build())
-            .build();
+    //    public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
+//            .amount(BigDecimal.valueOf(22))
+//            .earn(BigDecimal.valueOf(12))
+//            .spend(BigDecimal.ZERO)
+//            .build();
+//
+//    public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
+//            .cardNum("1234")
+//            .terminalCode("10")
+//            .bill(Bill.builder().sum(BigDecimal.valueOf(120)).build())
+//            .build();
     @Autowired
     ClientService clientService;
 
@@ -151,16 +151,23 @@ public class PaymentIntegrationTest {
             terminalService.addTerminals(PaymentIntegrationConst.CLUB_DATA);
             clientService.addClients(PaymentIntegrationConst.CLIENTS_DATA);
 
-            given().body(REQUEST, new Jackson2Mapper(new DefaultJackson2ObjectMapperFactory()))
-                    .contentType("application/json")
-                    .post(getIpAddr(webContainer, WEB_SERVICE_PORT) + "/payment")
-                    .then().log().all()
-                    .statusCode(200)
-                    .assertThat().log().body()
-                    .body("amount", equalTo(RESPONSE.getAmount().intValue()))
-                    .body("earn", equalTo(RESPONSE.getEarn().intValue()))
-                    .body("spend", equalTo(RESPONSE.getSpend().intValue()))
-            ;
+            try {
+                JSONArray requests = new JSONArray(REQUEST);
+                JSONArray responses = new JSONArray(RESPONSE);
+                for (int i = 0; i < requests.length(); i++) {
+                    given().body(requests.get(i).toString())
+                            .contentType("application/json")
+                            .post(getIpAddr(webContainer, WEB_SERVICE_PORT) + "/payment")
+                            .then().log().all()
+                            .statusCode(200)
+                            .assertThat()
+                            .log().body()
+                            .body("", equalToJson(responses.get(i).toString()))
+                    ;
+                }
+            } catch (JSONException e) {
+                assertTrue(false, "Data not parse to Json.");
+            }
         }
     }
 

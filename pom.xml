@@ -53,6 +53,7 @@
         <logstash-logback-encoder.version>5.3</logstash-logback-encoder.version>
         <jackson-databind.version>2.9.9</jackson-databind.version>
         <json.version>20180813</json.version>
+        <jsonassert.version>1.5.0</jsonassert.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -229,7 +230,6 @@
                 <artifactId>kotlin-maven-allopen</artifactId>
                 <version>${kotlin.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin -->
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-kotlin</artifactId>
@@ -245,7 +245,11 @@
                 <artifactId>json</artifactId>
                 <version>${json.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.skyscreamer</groupId>
+                <artifactId>jsonassert</artifactId>
+                <version>${jsonassert.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
