@@ -33,9 +33,10 @@ public class PilotTerminalService implements TerminalService {
     public Mono<TerminalResponse> getTerminal(TerminalRequest request) {
         log.info("Pilot terminal service run getTerminal ...");
         log.info(request.toString());
-        return webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
+        Mono<TerminalResponse> terminalResponseMono = webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(request))
                 .retrieve().bodyToMono(TerminalResponse.class);
+        return terminalResponseMono;
     }
 
     @Override

@@ -18,7 +18,7 @@ import static org.mockserver.model.HttpResponse.response;
 
 public class Expectations {
 
-    public static final String HEADER_CONTENT_TYPE = "application/json;charset=UTF-8";
+    public static final String HEADER_CONTENT_TYPE = "application/json";
 
     public static void createTerminalExpectations(ClientAndServer mockServer) {
         getTerminal(mockServer);
@@ -39,6 +39,7 @@ public class Expectations {
                 .ruleUnit(RuleUnit.builder().percent(BigDecimal.valueOf(20)).build())
                 .build();
         addPostExpect(mockServer, "/getTerminal", response, "terminal");
+        addPostExpect(mockServer, "/hello", "Hello", "hello");
     }
 
     private static void getClient(ClientAndServer mockServer) {
@@ -46,6 +47,7 @@ public class Expectations {
                 .account(Account.builder().amount(BigDecimal.valueOf(10)).build())
                 .build();
         addPostExpect(mockServer, "/getClient", response, "client");
+        addPostExpect(mockServer, "/hello", "Hello", "hello");
     }
 
     private static void getPayment(ClientAndServer mockServer) {

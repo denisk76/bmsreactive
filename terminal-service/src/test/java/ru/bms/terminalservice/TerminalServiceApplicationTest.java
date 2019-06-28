@@ -13,8 +13,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import ru.bms.TerminalRequest;
 import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
+import ru.bms.api.ITerminal;
 import ru.bms.api.RuleUnit;
-import ru.bms.api.Terminal;
 
 import java.math.BigDecimal;
 
@@ -37,7 +37,7 @@ public class TerminalServiceApplicationTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(HelloResponse.class)
-                .isEqualTo(HelloResponse.builder().message("Hello, my friend! I`m Terminal Controller.").build());
+                .isEqualTo(HelloResponse.builder().message("Hello, my friend! I`m ITerminal Controller.").build());
     }
 
 
@@ -48,7 +48,7 @@ public class TerminalServiceApplicationTest {
         webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
                         TerminalRequest.builder()
-                                .terminal(Terminal.builder().code(TERMINAL_CODE).build())
+                                .terminal(ITerminal.builder().code(TERMINAL_CODE).build())
                                 .build()
                 ))
                 .exchange()

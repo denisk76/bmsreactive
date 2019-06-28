@@ -11,28 +11,17 @@ public class PaymentRequest extends ApiRequest {
         super();
     }
 
-//    public PaymentRequest(Map<String, String> params) {
-//        super(params);
-//    }
-
-    public enum ParamType {
-        ACCOUNT,
-        BILL,
-        RULE_UNIT;
-
+    public String get(ParamType type) {
+        return get(type.name());
     }
 
     public void add(ParamType type, ApiParameter parameter) {
         add(type.name(), parameter);
     }
 
-    public void get(ParamType type) {
-        get(type.name());
-    }
-
     public Bill getBill() {
         try {
-            return Bill.fromJson(params.get(ParamType.BILL.name()));
+            return Bill.fromJson(get(ParamType.BILL));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -41,7 +30,7 @@ public class PaymentRequest extends ApiRequest {
 
     public Account getAccount() {
         try {
-            return Account.fromJson(params.get(ParamType.ACCOUNT.name()));
+            return Account.fromJson(get(ParamType.ACCOUNT));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -50,10 +39,16 @@ public class PaymentRequest extends ApiRequest {
 
     public RuleUnit getRuleUnit() {
         try {
-            return RuleUnit.fromJson(params.get(ParamType.RULE_UNIT.name()));
+            return RuleUnit.fromJson(get(ParamType.RULE_UNIT));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public enum ParamType {
+        ACCOUNT,
+        BILL,
+        RULE_UNIT
     }
 }

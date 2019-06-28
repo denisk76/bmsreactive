@@ -9,13 +9,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 import ru.bms.api.Bill;
 import ru.bms.api.HelloResponse;
 import ru.bms.api.IClient;
-import ru.bms.api.Terminal;
-import ru.bms.bpsapi.BPSPaymentData;
+import ru.bms.api.ITerminal;
 import ru.bms.bpsapi.BPSPaymentOperation;
 import ru.bms.bpsapi.BPSPaymentResponse;
+import ru.bms.bpsapi.IOperationData;
+import ru.bms.handlerservice.service.ParamService;
 
 import java.math.BigDecimal;
 
@@ -24,16 +26,18 @@ import java.math.BigDecimal;
 @ContextConfiguration(classes = {HandlerServiceApplication.class, HandlerTestConfig.class})
 public class HandlerControllerTest extends BaseTest {
 
-    public static final BPSPaymentOperation OPERATION = BPSPaymentOperation.builder()
-            .data(BPSPaymentData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build())
-            .terminal(Terminal.builder().code("123").build())
-            .client(IClient.builder().cardNum("0000080012345678").build())
-            .build();
+    //    public static final BPSPaymentOperation OPERATION = BPSPaymentOperation.builder()
+//            .param(IOperationData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build())
+//            .terminal(ITerminal.builder().code("123").build())
+//            .client(IClient.builder().cardNum("0000080012345678").build())
+//            .build();
     public static final BPSPaymentResponse RESPONSE = BPSPaymentResponse.builder()
             .amount(BigDecimal.TEN)
             .earn(BigDecimal.valueOf(5))
             .spend(BigDecimal.ZERO)
             .build();
+    @Autowired
+    private ParamService paramService;
     @Autowired
     WebTestClient webClient;
 
@@ -48,12 +52,22 @@ public class HandlerControllerTest extends BaseTest {
 
     @Test
     public void paymentTest() {
+        BPSPaymentOperation operation = new BPSPaymentOperation();
+        operation.add(BPSPaymentOperation.ParamType.OPERATION, IOperationData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build());
+        operation.add(BPSPaymentOperation.ParamType.TERMINAL, ITerminal.builder().code("123").build());
+        operation.add(BPSPaymentOperation.ParamType.CLIENT, IClient.builder().cardNum("0000080012345678").build());
         webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject(OPERATION))
+                .body(BodyInserters.fromObject(operation))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(BPSPaymentResponse.class)
                 .isEqualTo(RESPONSE);
+    }
+
+    @Test
+    public void paramTest() {
+        Mono<String> mono = paramService.getParam("http://localhost:8000", "/getTerminal", "{\"terminal\": {\"code\":\"10\"}}");
+        System.out.println("terminalJson = " + mono.block());
     }
 
 }

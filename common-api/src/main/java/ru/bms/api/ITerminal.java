@@ -1,4 +1,4 @@
-package ru.bms.bpsapi;
+package ru.bms.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,14 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import ru.bms.api.Bill;
+
+import java.io.IOException;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BPSPaymentData {
-    private Bill bill;
+public class ITerminal extends InputParameter {
+    private String code;
+
+    public static ITerminal fromJson(String json) throws IOException {
+        return objectMapper.readValue(json, ITerminal.class);
+    }
 
     @Override
     public String toString() {

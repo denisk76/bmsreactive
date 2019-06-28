@@ -25,7 +25,7 @@ public class TerminalController {
 
     @GetMapping("/hello")
     public Mono<HelloResponse> hello() {
-        return Mono.just(HelloResponse.builder().message("Hello, my friend! I`m Terminal Controller.").build());
+        return Mono.just(HelloResponse.builder().message("Hello, my friend! I`m ITerminal Controller.").build());
     }
 
     @PostMapping("/getTerminal")
