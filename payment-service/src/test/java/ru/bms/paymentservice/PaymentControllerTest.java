@@ -37,9 +37,9 @@ public class PaymentControllerTest {
     @Test
     public void paymentTest() {
         PaymentRequest request = new PaymentRequest();
-        request.add(PaymentRequest.ParamType.ACCOUNT, Account.builder().amount(d(10)).build());
-        request.add(PaymentRequest.ParamType.BILL, Bill.builder().sum(d(25)).build());
-        request.add(PaymentRequest.ParamType.RULE_UNIT, RuleUnit.builder().percent(d(20)).build());
+        request.add(ApiParamType.ACCOUNT, Account.builder().amount(d(10)).build().toString());
+        request.add(ApiParamType.BILL, Bill.builder().sum(d(25)).build().toString());
+        request.add(ApiParamType.RULE_UNIT, RuleUnit.builder().percent(d(20)).build().toString());
 
         PaymentResponse response = new PaymentResponse();
         response.add(PaymentResponse.ParamType.BILL, Bill.builder().sum(BigDecimal.valueOf(25)).build());

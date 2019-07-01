@@ -3,13 +3,13 @@ package ru.bms.service;
 import reactor.core.publisher.Mono;
 import ru.bms.AddTerminalRequest;
 import ru.bms.AddTerminalResponse;
-import ru.bms.TerminalRequest;
-import ru.bms.TerminalResponse;
+import ru.bms.api.ITerminal;
+import ru.bms.api.RuleUnit;
 
 public interface TerminalService {
     void setIpAddr(String ipAddr);
 
-    Mono<TerminalResponse> getTerminal(TerminalRequest request);
+    Mono<RuleUnit> getTerminal(ITerminal terminal);
 
     Mono<AddTerminalResponse> addTerminal(AddTerminalRequest request);
 

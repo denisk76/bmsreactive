@@ -1,6 +1,8 @@
 package ru.bms.paymentapi;
 
 import lombok.Data;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import ru.bms.api.*;
 
 import java.io.IOException;
@@ -11,17 +13,17 @@ public class PaymentRequest extends ApiRequest {
         super();
     }
 
-    public String get(ParamType type) {
+    public String get(ApiParamType type) {
         return get(type.name());
     }
 
-    public void add(ParamType type, ApiParameter parameter) {
+    public void add(ApiParamType type, String parameter) {
         add(type.name(), parameter);
     }
 
     public Bill getBill() {
         try {
-            return Bill.fromJson(get(ParamType.BILL));
+            return Bill.fromJson(get(ApiParamType.BILL));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -30,7 +32,7 @@ public class PaymentRequest extends ApiRequest {
 
     public Account getAccount() {
         try {
-            return Account.fromJson(get(ParamType.ACCOUNT));
+            return Account.fromJson(get(ApiParamType.ACCOUNT));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -39,16 +41,20 @@ public class PaymentRequest extends ApiRequest {
 
     public RuleUnit getRuleUnit() {
         try {
-            return RuleUnit.fromJson(get(ParamType.RULE_UNIT));
+            return RuleUnit.fromJson(get(ApiParamType.RULE_UNIT));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
-
-    public enum ParamType {
-        ACCOUNT,
-        BILL,
-        RULE_UNIT
+    @Override
+    public String toString() {
+        ReflectionToStringBuilder builder = new ReflectionToStringBuilder(this, ToStringStyle.JSON_STYLE);
+        return builder.build();
     }
+//    public enum ParamType {
+//        ACCOUNT,
+//        BILL,
+//        RULE_UNIT
+//    }
 }

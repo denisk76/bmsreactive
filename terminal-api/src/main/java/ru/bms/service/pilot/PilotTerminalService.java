@@ -11,8 +11,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.bms.AddTerminalRequest;
 import ru.bms.AddTerminalResponse;
-import ru.bms.TerminalRequest;
-import ru.bms.TerminalResponse;
+import ru.bms.api.ITerminal;
+import ru.bms.api.RuleUnit;
 import ru.bms.exceptions.TerminalApiException;
 import ru.bms.service.TerminalService;
 
@@ -30,13 +30,13 @@ public class PilotTerminalService implements TerminalService {
     }
 
     @Override
-    public Mono<TerminalResponse> getTerminal(TerminalRequest request) {
+    public Mono<RuleUnit> getTerminal(ITerminal request) {
         log.info("Pilot terminal service run getTerminal ...");
         log.info(request.toString());
-        Mono<TerminalResponse> terminalResponseMono = webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
+        Mono<RuleUnit> mono = webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(request))
-                .retrieve().bodyToMono(TerminalResponse.class);
-        return terminalResponseMono;
+                .retrieve().bodyToMono(RuleUnit.class);
+        return mono;
     }
 
     @Override

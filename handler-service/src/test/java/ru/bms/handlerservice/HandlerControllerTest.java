@@ -17,9 +17,12 @@ import ru.bms.api.ITerminal;
 import ru.bms.bpsapi.BPSPaymentOperation;
 import ru.bms.bpsapi.BPSPaymentResponse;
 import ru.bms.bpsapi.IOperationData;
+import ru.bms.bpsapi.InputParamType;
 import ru.bms.handlerservice.service.ParamService;
 
 import java.math.BigDecimal;
+
+import static ru.bms.bpsapi.InputParamType.OPERATION;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest
@@ -53,9 +56,9 @@ public class HandlerControllerTest extends BaseTest {
     @Test
     public void paymentTest() {
         BPSPaymentOperation operation = new BPSPaymentOperation();
-        operation.add(BPSPaymentOperation.ParamType.OPERATION, IOperationData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build());
-        operation.add(BPSPaymentOperation.ParamType.TERMINAL, ITerminal.builder().code("123").build());
-        operation.add(BPSPaymentOperation.ParamType.CLIENT, IClient.builder().cardNum("0000080012345678").build());
+        operation.add(InputParamType.OPERATION, IOperationData.builder().bill(Bill.builder().sum(BigDecimal.TEN).build()).build());
+        operation.add(InputParamType.TERMINAL, ITerminal.builder().code("123").build());
+        operation.add(InputParamType.CLIENT, IClient.builder().cardNum("0000080012345678").build());
         webClient.post().uri("/payment").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(operation))
                 .exchange()

@@ -3,8 +3,6 @@ package ru.bms.handlerservice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockserver.integration.ClientAndServer;
-import ru.bms.ClientResponse;
-import ru.bms.TerminalResponse;
 import ru.bms.api.Account;
 import ru.bms.api.Bill;
 import ru.bms.api.Delta;
@@ -35,19 +33,15 @@ public class Expectations {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     private static void getTerminal(ClientAndServer mockServer) {
-        TerminalResponse response = TerminalResponse.builder()
-                .ruleUnit(RuleUnit.builder().percent(BigDecimal.valueOf(20)).build())
-                .build();
+        RuleUnit response = RuleUnit.builder().percent(BigDecimal.valueOf(20)).build();
         addPostExpect(mockServer, "/getTerminal", response, "terminal");
-        addPostExpect(mockServer, "/hello", "Hello", "hello");
+        addGetExpect(mockServer, "/hello", "Hello","hello");
     }
 
     private static void getClient(ClientAndServer mockServer) {
-        ClientResponse response = ClientResponse.builder()
-                .account(Account.builder().amount(BigDecimal.valueOf(10)).build())
-                .build();
+        Account response = Account.builder().amount(BigDecimal.valueOf(10)).build();
         addPostExpect(mockServer, "/getClient", response, "client");
-        addPostExpect(mockServer, "/hello", "Hello", "hello");
+        addGetExpect(mockServer, "/hello", "Hello", "hello");
     }
 
     private static void getPayment(ClientAndServer mockServer) {
@@ -59,6 +53,7 @@ public class Expectations {
                 .spend(BigDecimal.ZERO)
                 .build());
         addPostExpect(mockServer, "/getPayment", paymentResponse, "payment");
+        addGetExpect(mockServer, "/hello", "Hello", "hello");
     }
 
     private static void addPostExpect(ClientAndServer mockServer, String s, Object response, String name) {
@@ -69,6 +64,19 @@ public class Expectations {
             ).respond(response().withStatusCode(200)
                     .withBody(objectMapper.writeValueAsString(response))
                     .withHeader("Content-Type", HEADER_CONTENT_TYPE)
+            );
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("mockServer " + name + " starting error.");
+        }
+    }
+
+    private static void addGetExpect(ClientAndServer mockServer, String s, Object response, String name) {
+
+        try {
+            mockServer.when(request().withMethod("GET")
+                    .withPath(s)
+            ).respond(response().withStatusCode(200)
+                    .withBody(objectMapper.writeValueAsString(response))
             );
         } catch (JsonProcessingException e) {
             throw new RuntimeException("mockServer " + name + " starting error.");

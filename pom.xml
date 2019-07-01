@@ -13,6 +13,7 @@
         <module>payment-api</module>
         <module>web-service</module>
         <module>client-api</module>
+        <module>handler-api</module>
         <module>common</module>
         <module>common-api</module>
         <module>terminal-api</module>
@@ -80,6 +81,11 @@
             <dependency>
                 <groupId>ru.bms</groupId>
                 <artifactId>client-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.bms</groupId>
+                <artifactId>handler-api</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>

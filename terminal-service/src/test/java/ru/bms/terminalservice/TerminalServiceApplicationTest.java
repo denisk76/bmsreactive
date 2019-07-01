@@ -10,8 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import ru.bms.TerminalRequest;
-import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
 import ru.bms.api.ITerminal;
 import ru.bms.api.RuleUnit;
@@ -47,16 +45,12 @@ public class TerminalServiceApplicationTest {
         terminalService.add("20", BigDecimal.valueOf(20));
         webClient.post().uri("/getTerminal").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        TerminalRequest.builder()
-                                .terminal(ITerminal.builder().code(TERMINAL_CODE).build())
-                                .build()
-                ))
+                        ITerminal.builder().code(TERMINAL_CODE).build())
+                )
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(TerminalResponse.class)
-                .isEqualTo(TerminalResponse.builder()
-                        .ruleUnit(RuleUnit.builder().percent(PERCENT).build())
-                        .build());
+                .expectBody(RuleUnit.class)
+                .isEqualTo(RuleUnit.builder().percent(PERCENT).build());
     }
 
 }

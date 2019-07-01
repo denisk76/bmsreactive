@@ -7,21 +7,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import ru.bms.api.Account;
+import ru.bms.api.ApiParamType;
 import ru.bms.api.HelloResponse;
-import ru.bms.api.RuleUnit;
-import ru.bms.bpsapi.BPSPaymentOperation;
-import ru.bms.bpsapi.BPSPaymentResponse;
+import ru.bms.bpsapi.*;
 import ru.bms.handlerservice.service.ParamService;
 import ru.bms.handlerservice.service.PaymentMapper;
+import ru.bms.handlerservice.service.WebConfiguration;
 import ru.bms.paymentapi.PaymentRequest;
 import ru.bms.paymentapi.service.PaymentService;
 import ru.bms.service.ClientService;
 import ru.bms.service.TerminalService;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Log
@@ -37,32 +32,19 @@ public class HandlerController {
     PaymentMapper mapper;
     @Autowired
     ParamService paramService;
-
-    private Map<BPSPaymentOperation.ParamType, ConfigLine> map;
+    @Autowired
+    WebConfiguration webConfiguration;
 
     public HandlerController() {
-        map = new HashMap<>();
-        map.put(BPSPaymentOperation.ParamType.CLIENT, ConfigLine.builder()
-                .paramType(PaymentRequest.ParamType.ACCOUNT)
-//                .url("http://client-service:8080")
-                .url("http://localhost:8001")
-                .method("/getClient")
-                .build());
-        map.put(BPSPaymentOperation.ParamType.TERMINAL, ConfigLine.builder()
-                .paramType(PaymentRequest.ParamType.RULE_UNIT)
-//                .url("/http://terminal-service:8080")
-                .url("http://localhost:8000")
-                .method("/getTerminal")
-                .build());
     }
 
-    private String getUrl(BPSPaymentOperation.ParamType type) {
-        ConfigLine line = map.get(type);
+    private String getUrl(InputParamType type) {
+        ConfigLine line = webConfiguration.get(type);
         return line.getUrl();
     }
 
-    private String getMethod(BPSPaymentOperation.ParamType type) {
-        ConfigLine line = map.get(type);
+    private String getMethod(InputParamType type) {
+        ConfigLine line = webConfiguration.get(type);
         return line.getMethod();
     }
 
@@ -81,15 +63,15 @@ public class HandlerController {
                 Mono.just(operation)
                         .map(mapper::mapRequest)
                         .zipWith(paramService.getParam(
-                                getUrl(BPSPaymentOperation.ParamType.CLIENT),
-                                getMethod(BPSPaymentOperation.ParamType.CLIENT),
-                                operation.get(BPSPaymentOperation.ParamType.CLIENT)
+                                getUrl(InputParamType.CLIENT),
+                                getMethod(InputParamType.CLIENT),
+                                operation.get(InputParamType.CLIENT)
                                 ),
                                 this::addClient)
                         .zipWith(paramService.getParam(
-                                getUrl(BPSPaymentOperation.ParamType.TERMINAL),
-                                getMethod(BPSPaymentOperation.ParamType.TERMINAL),
-                                operation.get(BPSPaymentOperation.ParamType.TERMINAL)
+                                getUrl(InputParamType.TERMINAL),
+                                getMethod(InputParamType.TERMINAL),
+                                operation.get(InputParamType.TERMINAL)
                                 ),
                                 this::addTerminal)
 //                        .zipWith(clientService.getClient(ClientRequest.builder()
@@ -104,17 +86,24 @@ public class HandlerController {
                         .map(mapper::mapResponse);
     }
 
+    @PostMapping("/config")
+    public String updateConfig(@RequestBody UpdateConfigRequest request) {
+        webConfiguration.update(request.getInputParamType(),
+                ConfigLine.builder()
+                        .paramType(request.getApiParamType())
+                        .url(request.getUrl())
+                        .method(request.getMethod())
+                        .build());
+        return "SUCCESS";
+    }
+
 //    private PaymentRequest addClient(PaymentRequest request, ClientResponse clientResponse) {
 //        request.add(PaymentRequest.ParamType.ACCOUNT, clientResponse.getAccount());
 //        return request;
 //    }
 
     private PaymentRequest addClient(PaymentRequest request, String clientResponse) {
-        try {
-            request.add(PaymentRequest.ParamType.ACCOUNT, Account.fromJson(clientResponse));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            request.add(ApiParamType.ACCOUNT, clientResponse);
         return request;
     }
 
@@ -123,11 +112,7 @@ public class HandlerController {
 //        return request;
 //    }
     private PaymentRequest addTerminal(PaymentRequest request, String terminalResponse) {
-        try {
-            request.add(PaymentRequest.ParamType.RULE_UNIT, RuleUnit.fromJson(terminalResponse));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            request.add(ApiParamType.RULE_UNIT, terminalResponse);
         return request;
     }
 }

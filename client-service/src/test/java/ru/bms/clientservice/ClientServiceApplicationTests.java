@@ -7,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import ru.bms.ClientRequest;
-import ru.bms.ClientResponse;
 import ru.bms.api.Account;
 import ru.bms.api.HelloResponse;
 import ru.bms.api.IClient;
@@ -35,14 +33,11 @@ public class ClientServiceApplicationTests {
     public void getClientTest() {
         webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        ClientRequest.builder()
-                                .client(IClient.builder().cardNum("00000800012345678").build())
-                                .build()
-                ))
+                        IClient.builder().cardNum("00000800012345678").build()))
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(ClientResponse.class)
-                .isEqualTo(ClientResponse.builder().account(Account.builder().amount(BigDecimal.TEN).build()).build());
+                .expectBody(Account.class)
+                .isEqualTo(Account.builder().amount(BigDecimal.TEN).build());
     }
 
 }

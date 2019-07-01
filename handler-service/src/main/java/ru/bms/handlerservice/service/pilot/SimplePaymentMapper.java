@@ -1,6 +1,8 @@
 package ru.bms.handlerservice.service.pilot;
 
+import lombok.extern.java.Log;
 import ru.bms.api.Account;
+import ru.bms.api.ApiParamType;
 import ru.bms.api.RuleUnit;
 import ru.bms.bpsapi.BPSPaymentOperation;
 import ru.bms.bpsapi.BPSPaymentResponse;
@@ -10,13 +12,20 @@ import ru.bms.paymentapi.PaymentResponse;
 
 import java.math.BigDecimal;
 
+@Log
 public class SimplePaymentMapper implements PaymentMapper {
     @Override
     public PaymentRequest mapRequest(BPSPaymentOperation operation) {
+        if(operation == null) {
+            log.info("operation is null !!!");
+        } else {
+            log.info(operation.toString());
+        }
         PaymentRequest paymentRequest = new PaymentRequest();
-        paymentRequest.add(PaymentRequest.ParamType.RULE_UNIT, RuleUnit.builder().percent(BigDecimal.valueOf(20)).build());
-        paymentRequest.add(PaymentRequest.ParamType.BILL, operation.getOperation().getBill());
-        paymentRequest.add(PaymentRequest.ParamType.ACCOUNT, Account.builder().amount(BigDecimal.TEN).build());
+        paymentRequest.add(ApiParamType.RULE_UNIT, "");
+        paymentRequest.add(ApiParamType.BILL, operation.getOperation().getBill().toString());
+        paymentRequest.add(ApiParamType.ACCOUNT, "");
+        log.info("map request success");
         return paymentRequest;
     }
 

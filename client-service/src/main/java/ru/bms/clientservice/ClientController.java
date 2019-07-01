@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.bms.AddClientRequest;
 import ru.bms.AddClientResponse;
-import ru.bms.ClientRequest;
-import ru.bms.ClientResponse;
 import ru.bms.api.Account;
 import ru.bms.api.HelloResponse;
+import ru.bms.api.IClient;
 import ru.bms.clientservice.data.AccountData;
 import ru.bms.clientservice.service.ClientService;
 
@@ -35,18 +34,17 @@ public class ClientController {
     }
 
     @PostMapping("/getClient")
-    public Mono<ClientResponse> getClient(@RequestBody ClientRequest request) {
+    public Mono<Account> getClient(@RequestBody IClient client) {
         log.info("post /getClient ");
-        log.info(request.toString());
-        log.info("find client by cardNum " + request.getClient().getCardNum() + " ...");
-        AccountData accountData = clientService.findByCardNum(request.getClient().getCardNum());
+        log.info(client.toString());
+        log.info("find client by cardNum " + client.getCardNum() + " ...");
+        AccountData accountData = clientService.findByCardNum(client.getCardNum());
         if (accountData == null) {
             log.info("client not found. That is the worst!");
         }
-        return Mono.just(ClientResponse.builder()
-                .account(Account.builder()
-                        .amount(accountData.getAmount())
-                        .build()).build());
+        return Mono.just(Account.builder()
+                .amount(accountData.getAmount())
+                .build());
     }
 
     @PostMapping("/addClient")

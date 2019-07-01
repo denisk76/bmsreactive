@@ -63,6 +63,10 @@
         </dependency>
         <dependency>
             <groupId>ru.bms</groupId>
+            <artifactId>handler-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.bms</groupId>
             <artifactId>payment-api</artifactId>
         </dependency>
         <dependency>

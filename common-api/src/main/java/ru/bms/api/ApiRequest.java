@@ -33,8 +33,8 @@ public class ApiRequest {
 //        this.params = params;
 //    }
 
-    public void add(String name, Object parameter) {
-        params.put(name, parameter.toString());
+    public void add(String name, String parameter) {
+        params.put(name, parameter);
     }
 
     public String get(String name) {

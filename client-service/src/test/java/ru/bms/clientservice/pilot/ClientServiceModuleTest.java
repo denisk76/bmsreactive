@@ -17,8 +17,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.bms.ClientRequest;
-import ru.bms.ClientResponse;
 import ru.bms.api.Account;
 import ru.bms.api.HelloResponse;
 import ru.bms.api.IClient;
@@ -70,13 +68,10 @@ public class ClientServiceModuleTest {
         clientService.add("0000080012341234", BigDecimal.TEN);
         webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(
-                        ClientRequest.builder()
-                                .client(IClient.builder().cardNum("0000080012341234").build())
-                                .build()
-                ))
+                        IClient.builder().cardNum("0000080012341234").build()))
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(ClientResponse.class)
-                .isEqualTo(ClientResponse.builder().account(Account.builder().amount(BigDecimal.TEN).build()).build());
+                .expectBody(Account.class)
+                .isEqualTo(Account.builder().amount(BigDecimal.TEN).build());
     }
 }

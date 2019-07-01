@@ -10,8 +10,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.bms.AddClientRequest;
 import ru.bms.AddClientResponse;
-import ru.bms.ClientRequest;
-import ru.bms.ClientResponse;
+import ru.bms.api.Account;
+import ru.bms.api.IClient;
 import ru.bms.service.ClientService;
 
 @Log
@@ -28,12 +28,12 @@ public class PilotClientService implements ClientService {
     }
 
     @Override
-    public Mono<ClientResponse> getClient(ClientRequest request) {
+    public Mono<Account> getClient(IClient request) {
         log.info("Pilot Client Service run getClient ...");
         log.info(request.toString());
         return webClient.post().uri("/getClient").accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(request))
-                .retrieve().bodyToMono(ClientResponse.class);
+                .retrieve().bodyToMono(Account.class);
     }
 
     @Override

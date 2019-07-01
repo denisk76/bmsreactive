@@ -6,9 +6,12 @@ import ru.bms.api.ITerminal;
 import ru.bms.bpsapi.BPSPaymentOperation;
 import ru.bms.bpsapi.BPSPaymentResponse;
 import ru.bms.bpsapi.IOperationData;
+import ru.bms.bpsapi.InputParamType;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
 import ru.bms.webservice.service.PaymentMapper;
+
+import static ru.bms.bpsapi.InputParamType.CLIENT;
 
 public class SimplePaymentMapper implements PaymentMapper {
     @Override
@@ -22,10 +25,10 @@ public class SimplePaymentMapper implements PaymentMapper {
 
     @Override
     public BPSPaymentOperation mapRequest(PutPaymentRequest request) {
-        return BPSPaymentOperation.builder()
-                .client(IClient.builder().cardNum(request.getCardNum()).build())
-                .terminal(ITerminal.builder().code(request.getTerminalCode()).build())
-                .data(IOperationData.builder().bill(Bill.builder().sum(request.getBill().getSum()).build()).build())
-                .build();
+        BPSPaymentOperation operation = new BPSPaymentOperation();
+        operation.add(InputParamType.CLIENT, IClient.builder().cardNum(request.getCardNum()).build());
+        operation.add(InputParamType.TERMINAL, ITerminal.builder().code(request.getTerminalCode()).build());
+        operation.add(InputParamType.OPERATION, IOperationData.builder().bill(Bill.builder().sum(request.getBill().getSum()).build()).build());
+        return operation;
     }
 }

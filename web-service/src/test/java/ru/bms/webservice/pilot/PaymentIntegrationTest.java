@@ -22,7 +22,10 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.bms.PaymentIntegrationConst;
+import ru.bms.UpdateConfigRequest;
+import ru.bms.bpsapi.InputParamType;
 import ru.bms.service.ClientService;
+import ru.bms.service.HandlerService;
 import ru.bms.service.TerminalService;
 
 import static io.restassured.RestAssured.given;
@@ -53,19 +56,10 @@ public class PaymentIntegrationTest {
 
     @Autowired
     TerminalService terminalService;
-    //    public static final PutPaymentResponse RESPONSE = PutPaymentResponse.builder()
-//            .amount(BigDecimal.valueOf(22))
-//            .earn(BigDecimal.valueOf(12))
-//            .spend(BigDecimal.ZERO)
-//            .build();
-//
-//    public static final PutPaymentRequest REQUEST = PutPaymentRequest.builder()
-//            .cardNum("1234")
-//            .terminalCode("10")
-//            .bill(Bill.builder().sum(BigDecimal.valueOf(120)).build())
-//            .build();
     @Autowired
     ClientService clientService;
+    @Autowired
+    HandlerService handlerService;
 
     @ClassRule
     static Network network = Network.newNetwork();
@@ -147,9 +141,18 @@ public class PaymentIntegrationTest {
 
             terminalService.setIpAddr(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT));
             clientService.setIpAddr(getIpAddr(clientContainer, CLIENT_SERVICE_PORT));
+            handlerService.setIpAddr(getIpAddr(handlerContainer, HANDLER_SERVICE_PORT));
 
             terminalService.addTerminals(PaymentIntegrationConst.CLUB_DATA);
             clientService.addClients(PaymentIntegrationConst.CLIENTS_DATA);
+            handlerService.updateConfig(UpdateConfigRequest.builder()
+                    .inputParamType(InputParamType.CLIENT.toString())
+                    .url(getIpAddr(clientContainer, CLIENT_SERVICE_PORT))
+                    .build());
+            handlerService.updateConfig(UpdateConfigRequest.builder()
+                    .inputParamType(InputParamType.TERMINAL.toString())
+                    .url(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT))
+                    .build());
 
             try {
                 JSONArray requests = new JSONArray(REQUEST);

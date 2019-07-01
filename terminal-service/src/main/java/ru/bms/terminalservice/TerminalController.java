@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.bms.AddTerminalRequest;
 import ru.bms.AddTerminalResponse;
-import ru.bms.TerminalRequest;
-import ru.bms.TerminalResponse;
 import ru.bms.api.HelloResponse;
+import ru.bms.api.ITerminal;
 import ru.bms.api.RuleUnit;
 
 import java.math.BigDecimal;
@@ -29,17 +28,17 @@ public class TerminalController {
     }
 
     @PostMapping("/getTerminal")
-    public Mono<TerminalResponse> getTerminal(@RequestBody TerminalRequest request) {
+    public Mono<RuleUnit> getTerminal(@RequestBody ITerminal terminal) {
         log.info("post /getTerminal ");
-        log.info(request.toString());
-        String code = request.getTerminal().getCode();
+        log.info(terminal.toString());
+        String code = terminal.getCode();
         BigDecimal percent;
         try {
             percent = terminalManager.getByCode(code);
         } catch (Exception e) {
             percent = BigDecimal.ONE;
         }
-        return Mono.just(TerminalResponse.builder().ruleUnit(RuleUnit.builder().percent(percent).build()).build());
+        return Mono.just(RuleUnit.builder().percent(percent).build());
     }
 
     @PostMapping("/addTerminal")
