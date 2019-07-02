@@ -54,6 +54,12 @@ public class HandlerController {
         return line.getMethod();
     }
 
+    private ApiParamType getApiType(InputParamType type) {
+        ConfigLine line = webConfiguration.get(type);
+        log.info("get api type for " + type + ": " + line.getMethod());
+        return line.getParamType();
+    }
+
     @GetMapping("/hello")
     public Mono<HelloResponse> hello() {
         return Mono.just(HelloResponse.builder().message("Hello!").build());
@@ -64,56 +70,35 @@ public class HandlerController {
     public Mono<BPSPaymentResponse> payment(@RequestBody BPSPaymentOperation operation) {
         log.info("post /payment");
         log.info(operation.toString());
+        Mono<PaymentRequest> mono = Mono.just(operation)
+                .map(mapper::mapRequest);
+        for (String key : operation.params.keySet()) {
+            if (key.equals(InputParamType.OPERATION.name())) continue;
+            InputParamType type = InputParamType.valueOf(key);
+            mono = zipParam(mono, operation, type, getApiType(type));
+        }
+        return mono
+                .flatMap(paymentService::payment)
+                .map(mapper::mapResponse);
+    }
 
-        return
-                Mono.just(operation)
-                        .map(mapper::mapRequest)
-                        .zipWith(paramService.getParam(
-                                getUrl(InputParamType.CLIENT),
-                                getMethod(InputParamType.CLIENT),
-                                operation.get(InputParamType.CLIENT)
-                                ),
-                                this::addClient)
-                        .zipWith(paramService.getParam(
-                                getUrl(InputParamType.TERMINAL),
-                                getMethod(InputParamType.TERMINAL),
-                                operation.get(InputParamType.TERMINAL)
-                                ),
-                                this::addTerminal)
-//                        .zipWith(clientService.getClient(ClientRequest.builder()
-//                                        .client(operation.getClient())
-//                                        .build()),
-//                                this::addClient)
-//                        .zipWith(terminalService.getTerminal(TerminalRequest.builder()
-//                                        .terminal(operation.getTerminal())
-//                                        .build()),
-//                                this::addTerminal)
-                        .flatMap(paymentService::payment)
-                        .map(mapper::mapResponse);
+    private PaymentRequest addParam(PaymentRequest request, String value, ApiParamType type) {
+        request.add(type, value);
+        return request;
+    }
+
+    private Mono<PaymentRequest> zipParam(Mono<PaymentRequest> mono, BPSPaymentOperation operation, InputParamType type, ApiParamType apiType) {
+        return mono.zipWith(paramService.getParam(
+                getUrl(type),
+                getMethod(type),
+                operation.get(type)
+                ),
+                (p, s) -> this.addParam(p, s, apiType));
     }
 
     @PostMapping("/config")
     public String updateConfig(@RequestBody UpdateConfigRequest request) {
         webConfiguration.update(request.getInputParamType(), request.getUrl());
         return "SUCCESS";
-    }
-
-//    private PaymentRequest addClient(PaymentRequest request, ClientResponse clientResponse) {
-//        request.add(PaymentRequest.ParamType.ACCOUNT, clientResponse.getAccount());
-//        return request;
-//    }
-
-    private PaymentRequest addClient(PaymentRequest request, String clientResponse) {
-            request.add(ApiParamType.ACCOUNT, clientResponse);
-        return request;
-    }
-
-    //    private PaymentRequest addTerminal(PaymentRequest request, TerminalResponse terminalResponse) {
-//        request.add(PaymentRequest.ParamType.RULE_UNIT, terminalResponse.getRuleUnit());
-//        return request;
-//    }
-    private PaymentRequest addTerminal(PaymentRequest request, String terminalResponse) {
-            request.add(ApiParamType.RULE_UNIT, terminalResponse);
-        return request;
     }
 }
