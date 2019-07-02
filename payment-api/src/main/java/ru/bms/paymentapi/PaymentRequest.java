@@ -1,6 +1,7 @@
 package ru.bms.paymentapi;
 
 import lombok.Data;
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import ru.bms.api.*;
@@ -8,6 +9,7 @@ import ru.bms.api.*;
 import java.io.IOException;
 
 @Data
+@Log
 public class PaymentRequest extends ApiRequest {
     public PaymentRequest() {
         super();
@@ -23,7 +25,12 @@ public class PaymentRequest extends ApiRequest {
 
     public Bill getBill() {
         try {
-            return Bill.fromJson(get(ApiParamType.BILL));
+            log.info("getBill ...");
+            String json = get(ApiParamType.BILL);
+            log.info("Bill json = " + json);
+            Bill bill = Bill.fromJson(json);
+            log.info("convert bill from json result: " + bill);
+            return bill;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

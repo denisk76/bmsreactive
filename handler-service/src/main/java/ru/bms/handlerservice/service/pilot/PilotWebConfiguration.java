@@ -1,5 +1,6 @@
 package ru.bms.handlerservice.service.pilot;
 
+import lombok.extern.java.Log;
 import ru.bms.api.ApiParamType;
 import ru.bms.bpsapi.ConfigLine;
 import ru.bms.bpsapi.InputParamType;
@@ -8,6 +9,7 @@ import ru.bms.handlerservice.service.WebConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log
 public class PilotWebConfiguration implements WebConfiguration {
 
     private Map<InputParamType, ConfigLine> map;
@@ -35,8 +37,12 @@ public class PilotWebConfiguration implements WebConfiguration {
     }
 
     @Override
-    public void update(InputParamType type, ConfigLine configLine) {
-        map.replace(type, configLine);
+    public void update(String type, String url) {
+        log.info("set module url: " + type + " = " + url);
+        ConfigLine configLine = map.get(InputParamType.valueOf(type));
+        log.info("old url = " + configLine.getUrl());
+        configLine.setUrl(url);
+//        map.replace(type, configLine);
     }
 
     @Override

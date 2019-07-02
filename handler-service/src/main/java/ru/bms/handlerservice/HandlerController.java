@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import ru.bms.UpdateConfigRequest;
 import ru.bms.api.ApiParamType;
 import ru.bms.api.HelloResponse;
-import ru.bms.bpsapi.*;
+import ru.bms.bpsapi.BPSPaymentOperation;
+import ru.bms.bpsapi.BPSPaymentResponse;
+import ru.bms.bpsapi.ConfigLine;
+import ru.bms.bpsapi.InputParamType;
 import ru.bms.handlerservice.service.ParamService;
 import ru.bms.handlerservice.service.PaymentMapper;
 import ru.bms.handlerservice.service.WebConfiguration;
@@ -40,11 +44,13 @@ public class HandlerController {
 
     private String getUrl(InputParamType type) {
         ConfigLine line = webConfiguration.get(type);
+        log.info("get url for " + type + ": " + line.getUrl());
         return line.getUrl();
     }
 
     private String getMethod(InputParamType type) {
         ConfigLine line = webConfiguration.get(type);
+        log.info("get method for " + type + ": " + line.getMethod());
         return line.getMethod();
     }
 
@@ -88,12 +94,7 @@ public class HandlerController {
 
     @PostMapping("/config")
     public String updateConfig(@RequestBody UpdateConfigRequest request) {
-        webConfiguration.update(request.getInputParamType(),
-                ConfigLine.builder()
-                        .paramType(request.getApiParamType())
-                        .url(request.getUrl())
-                        .method(request.getMethod())
-                        .build());
+        webConfiguration.update(request.getInputParamType(), request.getUrl());
         return "SUCCESS";
     }
 

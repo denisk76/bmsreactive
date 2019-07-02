@@ -1,5 +1,7 @@
 package ru.bms.handlerservice;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,7 @@ import ru.bms.bpsapi.InputParamType;
 import ru.bms.handlerservice.service.ParamService;
 
 import java.math.BigDecimal;
-
-import static ru.bms.bpsapi.InputParamType.OPERATION;
+import java.util.HashMap;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest
@@ -43,6 +44,32 @@ public class HandlerControllerTest extends BaseTest {
     private ParamService paramService;
     @Autowired
     WebTestClient webClient;
+
+    @Test
+    public void mapTest() {
+        HashMap<String, data> map = new HashMap<>();
+        map.put("1", new data("first"));
+        map.put("2", new data("second"));
+        map.forEach((a, b) -> System.out.println(a + " : " + b));
+        data data = map.get("1");
+        data.setS("third");
+        map.forEach((a, b) -> System.out.println(a + " : " + b));
+    }
+
+    @Getter
+    @Setter
+    private class data {
+        private String s;
+
+        public data(String s) {
+            this.s = s;
+        }
+
+        @Override
+        public String toString() {
+            return s;
+        }
+    }
 
     @Test
     public void helloTest() {

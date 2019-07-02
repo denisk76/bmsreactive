@@ -147,11 +147,13 @@ public class PaymentIntegrationTest {
             clientService.addClients(PaymentIntegrationConst.CLIENTS_DATA);
             handlerService.updateConfig(UpdateConfigRequest.builder()
                     .inputParamType(InputParamType.CLIENT.toString())
-                    .url(getIpAddr(clientContainer, CLIENT_SERVICE_PORT))
+                    .url("http://client-service:8080")
+//                    .url(getIpAddr(clientContainer, CLIENT_SERVICE_PORT))
                     .build());
             handlerService.updateConfig(UpdateConfigRequest.builder()
                     .inputParamType(InputParamType.TERMINAL.toString())
-                    .url(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT))
+                    .url("http://terminal-service:8080")
+//                    .url(getIpAddr(terminalContainer, TERMINAL_SERVICE_PORT))
                     .build());
 
             try {

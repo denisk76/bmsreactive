@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.bms.api.Account;
+import ru.bms.api.Bill;
 import ru.bms.api.Delta;
 import ru.bms.api.HelloResponse;
 import ru.bms.paymentapi.PaymentRequest;
@@ -27,7 +28,9 @@ public class PaymentController {
     public Mono<PaymentResponse> payment(@RequestBody PaymentRequest request) {
         log.info("post /getPayment");
         log.info(request.toString());
-        BigDecimal sum = request.getBill().getSum()
+        Bill bill = request.getBill();
+        log.info("bill is reading.");
+        BigDecimal sum = bill.getSum()
                 .multiply(request.getRuleUnit().getPercent())
                 .divide(BigDecimal.valueOf(100));
         log.info("sum = " + sum);

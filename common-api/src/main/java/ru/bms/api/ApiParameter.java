@@ -5,11 +5,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public abstract class ApiParameter {
-    protected static ObjectMapper objectMapper;
-
-    public ApiParameter() {
-        objectMapper = new ObjectMapper();
-    }
+    protected static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public String toString() {

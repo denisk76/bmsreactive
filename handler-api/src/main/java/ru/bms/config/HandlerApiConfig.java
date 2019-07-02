@@ -7,14 +7,14 @@ import ru.bms.service.HandlerService;
 import ru.bms.service.pilot.PilotHandlerService;
 
 @Configuration
-public class HandlerConfig {
+public class HandlerApiConfig {
     @Bean
     public WebClient handlerWebClient() {
         return WebClient.builder().baseUrl("http://handler-service:8080").build();
     }
 
     @Bean
-    public HandlerService clientService() {
+    public HandlerService handlerService() {
         return new PilotHandlerService();
     }
 

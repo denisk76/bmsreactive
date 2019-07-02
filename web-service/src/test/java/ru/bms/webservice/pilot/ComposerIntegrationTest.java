@@ -17,8 +17,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.bms.AddClientRequest;
 import ru.bms.AddTerminalRequest;
+import ru.bms.UpdateConfigRequest;
 import ru.bms.api.Bill;
+import ru.bms.bpsapi.InputParamType;
 import ru.bms.service.ClientService;
+import ru.bms.service.HandlerService;
 import ru.bms.service.TerminalService;
 import ru.bms.webservice.api.PutPaymentRequest;
 import ru.bms.webservice.api.PutPaymentResponse;
@@ -61,6 +64,8 @@ public class ComposerIntegrationTest {
             .build();
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private HandlerService handlerService;
 
     @Container
     private static DockerComposeContainer compose =
@@ -113,6 +118,18 @@ public class ComposerIntegrationTest {
         String serialize = jackson2Mapper.serialize(context);
         System.out.println("serialize = " + serialize);
         terminalService.setIpAddr(getIpAddr(compose, TERMINAL_SERVICE, TERMINAL_SERVICE_PORT));
+
+        handlerService.setIpAddr(getIpAddr(compose, HANDLER_SERVICE, HANDLER_SERVICE_PORT));
+
+        handlerService.updateConfig(UpdateConfigRequest.builder()
+                .inputParamType(InputParamType.CLIENT.toString())
+                .url("http://client-service:8080")
+                .build());
+        handlerService.updateConfig(UpdateConfigRequest.builder()
+                .inputParamType(InputParamType.TERMINAL.toString())
+                .url("http://terminal-service:8080")
+                .build());
+
         terminalService.addTerminal(AddTerminalRequest.builder()
                 .terminalCode("10")
                 .percent(BigDecimal.valueOf(10))
