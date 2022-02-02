@@ -42,7 +42,7 @@
         <lombok.version>1.18.8</lombok.version>
         <junit.version>5.4.2</junit.version>
         <junit-platform.version>1.4.2</junit-platform.version>
-        <postgresql.version>42.2.5</postgresql.version>
+        <postgresql.version>42.2.25</postgresql.version>
         <hibernate.version>5.4.3.Final</hibernate.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <mockserver.version>5.5.4</mockserver.version>
